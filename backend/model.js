@@ -15,6 +15,7 @@ const { Client } = require("pg");
 //   }
 
 //   db.connect();
+const openaiKey = process.env.OPENAI_API_KEY;
 
 db = new Client({
   connectionString: `music_search_test`,
@@ -25,7 +26,7 @@ db.connect();
 const { OpenAI } = require("openai");
 
 const openai = new OpenAI({
-  apiKey: "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",
+  apiKey: openaiKey,
 });
 
 async function main(input) {
