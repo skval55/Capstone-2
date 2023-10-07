@@ -1,4 +1,5 @@
 const { Client } = require("pg");
+require("dotenv").config();
 // const { OpenAI } = require("langchain/llms/openai");
 // const { PGVectorStore } = require("langchain/vectorstores/pgvector");
 // if (process.env.NODE_ENV === "production") {
@@ -12227,6 +12228,6 @@ const arrOfStrings = [
 ];
 // const embeddings = main(arrOfStrings);
 // practiceRun.insertMany(songs, "skval", arrOfStrings);
-practiceRun.searchSongs("a song that is very indie");
+// practiceRun.searchSongs("a song that is very indie");
 // practiceRun.createTable();
 module.exports = { Music, practiceRun };
