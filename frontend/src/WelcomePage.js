@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import SpotifyApi from "./Api";
-import searchSongs from "./backendApi";
-
+import BackendApi from "./backendApi";
+// import axios from "axios";
 // const WelcomePage = () => {
 //   new SpotifyApi.accessToken();
 
@@ -17,6 +17,8 @@ import searchSongs from "./backendApi";
 const WelcomePage = () => {
   const [searchParams] = useSearchParams();
   const spotifyApi = new SpotifyApi();
+  const backendApi = new BackendApi();
+
   useEffect(() => {
     const accessToken = localStorage.getItem("access_token");
 
@@ -40,6 +42,12 @@ const WelcomePage = () => {
     }
   }, []);
 
+  const updateDatabase = async () => {
+    const [musicInfo, prompts] = await spotifyApi.getTracksFeatures();
+    const userInfo = await spotifyApi.getCurrUser();
+    backendApi.updateDb(userInfo, musicInfo, prompts);
+  };
+
   const INITIAL_STATE = {
     prompt: "",
   };
@@ -55,7 +63,7 @@ const WelcomePage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // await login(formData);
-    const res = await searchSongs(formData.prompt);
+    const res = await backendApi.searchSongs(formData.prompt);
     console.log("frontend");
     console.log(res);
     setFormData(INITIAL_STATE);
@@ -64,11 +72,11 @@ const WelcomePage = () => {
   return (
     <div>
       <h1>done my bro</h1>
-      <button onClick={() => spotifyApi.getPlaylists()}>get playlists</button>
-      <button onClick={() => spotifyApi.getMusic()}>get music</button>
+      <button onClick={() => spotifyApi.getCurrUser()}>get CurrUser</button>
       <button onClick={() => spotifyApi.getTracksFeatures()}>
         get music deets
       </button>
+      <button onClick={() => updateDatabase()}>update DB</button>
       <form onSubmit={handleSubmit}>
         <label>
           Prompt

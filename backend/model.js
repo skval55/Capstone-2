@@ -112,13 +112,17 @@ class Music {
       console.error("Error inserting data:", error);
     }
   }
-  async insertMany(songs, username, prompts) {
+  async insertManyIntoSongs(songs, prompts) {
     const values = [];
     const embeddings = await main(prompts);
     for (let i = 0; i < songs.length; i++) {
-      const val = `('${songs[i].id}', '${username}', '[${embeddings[
+      const val = `('${songs[i].id}', '[${embeddings[
         i
-      ].embedding.toString()}]')`;
+      ].embedding.toString()}]', '${songs[i].songName}', '${
+        songs[i].artist
+      }', '${songs[i].album}', '${songs[i].image_urls}', '${
+        songs[i].mp3_url
+      }' )`;
       values.push(val);
     }
     // console.log(values);

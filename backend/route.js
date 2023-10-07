@@ -31,4 +31,19 @@ router.post("/search", async function (req, res, next) {
   }
 });
 
+router.post("/insert-db", async function (req, res, next) {
+  try {
+    const { userInfo, musicInfo, prompts } = req.body;
+    console.log("userInfo***********************************");
+    console.log(userInfo);
+    console.log("userInfo***********************************");
+    await practiceRun.insertManyIntoSongs(musicInfo, prompts);
+    console.log("from routes");
+    console.log(response);
+    return res.json({ message: "data inserted" });
+  } catch (err) {
+    return next(err);
+  }
+});
+
 module.exports = router;

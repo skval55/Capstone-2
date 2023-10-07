@@ -101,6 +101,14 @@ class SpotifyApi {
     });
     console.log(res);
   }
+  async getCurrUser() {
+    const res = await axios.get("https://api.spotify.com/v1/me", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    });
+    console.log(res);
+  }
 
   /**
    * this function calls the spotify api to get curr users saved tracks which will get
@@ -160,6 +168,9 @@ class SpotifyApi {
         artist: tracks[i].track.artists[0].name,
         album: tracks[i].track.album.name,
         popularity: tracks[i].track.popularity,
+        mp3_url: tracks[i].track.preview_url,
+        image_urls: tracks[i].track.album.images,
+        playlist: "liked Songs",
       };
     }
 
@@ -196,7 +207,7 @@ class SpotifyApi {
     const [finalArr, promptArr] = this.mergeTrackInfo(newArr, tracks);
     console.log("final arr", finalArr);
     console.log("prompt arr", promptArr);
-    return finalArr, promptArr;
+    return [finalArr, promptArr];
   }
   /**
    * get genres takes a set of artist ids and hits the spotify api with
