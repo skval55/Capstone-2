@@ -47,3 +47,6 @@ CREATE TABLE songs_to_playlists (
   FOREIGN KEY (song_id) REFERENCES songs (id),
   FOREIGN KEY (playlist_id) REFERENCES playlists (id)
 );
+
+ALTER TABLE songs_to_users
+ADD CONSTRAINT unique_song_user_combination UNIQUE (song_id, user_id);

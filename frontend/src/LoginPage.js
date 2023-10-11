@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import SpotifyApi from "./Api";
+import axios from "axios";
 
 // const LoginPage = () => {
 //   useEffect(() => {
@@ -13,6 +14,10 @@ import SpotifyApi from "./Api";
 // };
 const LoginPage = () => {
   const spotifyApi = new SpotifyApi();
+  // const login = async () => {
+  //   const res = await axios.get("http://localhost:3001/spotify/login");
+  //   console.log(res);
+  // };
   useEffect(() => {
     console.log("sup brp");
     localStorage.clear();

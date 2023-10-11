@@ -43,9 +43,14 @@ const WelcomePage = () => {
   }, []);
 
   const updateDatabase = async () => {
-    const [musicInfo, prompts] = await spotifyApi.getTracksFeatures();
-    const userInfo = await spotifyApi.getCurrUser();
-    backendApi.updateDb(userInfo, musicInfo, prompts);
+    const res = await backendApi.updateDb(localStorage.getItem("access_token"));
+    console.log(res);
+  };
+  const updateUser = async () => {
+    const res = await backendApi.updateUser(
+      localStorage.getItem("access_token")
+    );
+    console.log(res);
   };
 
   const INITIAL_STATE = {
@@ -69,14 +74,33 @@ const WelcomePage = () => {
     setFormData(INITIAL_STATE);
   };
 
+  const getPlaylists = async () => {
+    const res = await backendApi.getPlaylists(
+      localStorage.getItem("access_token")
+    );
+    console.log(res);
+  };
+  const getCurrUser = async () => {
+    const res = await backendApi.getCurruser(
+      localStorage.getItem("access_token")
+    );
+    console.log(res);
+  };
+  const getMusicDeets = async () => {
+    const res = await backendApi.getMusicDeets(
+      localStorage.getItem("access_token")
+    );
+    console.log(res);
+  };
+
   return (
     <div>
       <h1>done my bro</h1>
-      <button onClick={() => spotifyApi.getCurrUser()}>get CurrUser</button>
-      <button onClick={() => spotifyApi.getTracksFeatures()}>
-        get music deets
-      </button>
+      <button onClick={() => getCurrUser()}>get CurrUser</button>
+      <button onClick={() => getPlaylists()}>get playlists</button>
+      <button onClick={() => getMusicDeets()}>get music deets</button>
       <button onClick={() => updateDatabase()}>update DB</button>
+      <button onClick={() => updateUser()}>update user</button>
       <form onSubmit={handleSubmit}>
         <label>
           Prompt

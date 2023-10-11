@@ -1,7 +1,7 @@
-const { Music, practiceRun } = require("./model");
+const { Music, practiceRun } = require("../model");
 const express = require("express");
 const router = new express.Router();
-const { BadRequestError } = require("./expressError");
+const { BadRequestError } = require("../expressError");
 
 // router.get("/:id", async function (req, res, next) {
 //     try {
