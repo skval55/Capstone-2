@@ -3,19 +3,25 @@ const createPrompt = require("./createPrompt");
 
 class SpotifyApi {
   async getPlaylists(token) {
-    console.log(token);
-    console.log("***************token**********");
-    const res = await axios.get("https://api.spotify.com/v1/me/playlists", {
-      params: {
-        limit: 10,
-        offset: 5,
-      },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    console.log(res);
-    return res.data.items;
+    let playlistsLength = 50;
+    let offset = 0;
+    let playlists = [];
+    while (playlistsLength > 0) {
+      const res = await axios.get("https://api.spotify.com/v1/me/playlists", {
+        params: {
+          limit: 50,
+          offset: offset,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(res);
+      offset += 50;
+      playlists = [...playlists, ...res.data.items];
+      playlistsLength = res.data.items.length;
+    }
+    return playlists;
   }
   async getCurrUser(token) {
     const res = await axios.get("https://api.spotify.com/v1/me", {
@@ -87,7 +93,7 @@ class SpotifyApi {
         popularity: tracks[i].track.popularity,
         mp3_url: tracks[i].track.preview_url,
         image_urls: tracks[i].track.album.images,
-        playlist: "liked Songs",
+        playlist_id: null,
       };
     }
 

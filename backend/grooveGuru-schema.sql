@@ -1,8 +1,10 @@
 -- Create the 'songs' table
 
-DROP TABLE songs_to_users;
-DROP TABLE songs;
-DROP TABLE users;
+DROP TABLE songs_to_users CASCADE;
+DROP TABLE songs CASCADE;
+DROP TABLE users CASCADE;
+DROP TABLE playlists CASCADE;
+DROP TABLE songs_to_playlists CASCADE;
 -- DROP TABLE songs2;
 -- DROP TABLE songs3;
 
@@ -34,7 +36,7 @@ CREATE TABLE songs_to_users (
 
 -- Create the 'playlists' table
 CREATE TABLE playlists (
-  id serial PRIMARY KEY,
+  id varchar PRIMARY KEY,
   user_id integer,
   name varchar,
   FOREIGN KEY (user_id) REFERENCES users (id)
@@ -43,10 +45,13 @@ CREATE TABLE playlists (
 -- Create the 'songs_to_playlists' table
 CREATE TABLE songs_to_playlists (
   song_id varchar PRIMARY KEY,
-  playlist_id integer,
+  playlist_id varchar ,
   FOREIGN KEY (song_id) REFERENCES songs (id),
   FOREIGN KEY (playlist_id) REFERENCES playlists (id)
 );
 
 ALTER TABLE songs_to_users
 ADD CONSTRAINT unique_song_user_combination UNIQUE (song_id, user_id);
+
+ALTER TABLE songs_to_playlists
+ADD CONSTRAINT unique_song_playlist_combination UNIQUE (song_id, playlist_id);
