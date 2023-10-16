@@ -43,12 +43,16 @@ class SpotifyApi {
    * and one with other details about the track
    *
    */
-  async getMusic(token) {
+  async getMusic(token, id) {
     let trackLength = 50;
     let offset = 0;
     let tracks = [];
+    const url =
+      id === null
+        ? "https://api.spotify.com/v1/me/tracks"
+        : `https://api.spotify.com/v1/playlists/${id}/tracks`;
     while (trackLength > 0) {
-      const res = await axios.get("https://api.spotify.com/v1/me/tracks", {
+      const res = await axios.get(url, {
         params: {
           market: "US",
           limit: 50,
@@ -93,7 +97,7 @@ class SpotifyApi {
         popularity: tracks[i].track.popularity,
         mp3_url: tracks[i].track.preview_url,
         image_urls: tracks[i].track.album.images,
-        playlist_id: null,
+        playlist_id: id,
       };
     }
 
@@ -112,8 +116,8 @@ class SpotifyApi {
    * and it will return more details on the tracks
    *
    */
-  async getTracksFeatures(token) {
-    const [tracksId, tracks] = await this.getMusic(token);
+  async getTracksFeatures(token, id = null) {
+    const [tracksId, tracks] = await this.getMusic(token, id);
     let newArr = [];
     for (let i = 0; i < tracksId.length; i + 100) {
       let tracksToCheck = tracksId.splice(i, i + 100);

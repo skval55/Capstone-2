@@ -72,6 +72,41 @@ class Music {
   //       console.error("Error inserting data:", error);
   //     }
   //   }
+  async checkIfUserExists(username) {
+    try {
+      const res = await db.query(
+        `SELECT id
+     FROM users
+     WHERE username = $1`,
+        [username]
+      );
+      const userExists = res.rows[0] ? true : false;
+      return userExists;
+    } catch (error) {}
+  }
+  async getUserPlaylists(username) {
+    console.log("username from playlists", username);
+    try {
+      const res = await db.query(
+        `SELECT id
+     FROM users
+     WHERE username = $1`,
+        [username]
+      );
+
+      const userId = res.rows[0].id;
+
+      const playlistsRes = await db.query(
+        `SELECT id, name FROM playlists WHERE user_id = $1`,
+        [userId]
+      );
+      console.log("res from playlists", playlistsRes.rows);
+      return playlistsRes.rows;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   async searchSongs(input) {
     try {
       const embedding = await main(input);
@@ -226,7 +261,7 @@ class Music {
       console.log("userid", userId.rows[0].id);
       const values = [];
       for (let i = 0; i < playlists.length; i++) {
-        const val = `('${playlists[i].id}', '${userId.rows[0].id}', '${playlists[i].name}')`;
+        const val = `('${playlists[i].id}', '${userId.rows[0].id}', '${playlists[i].name}', FALSE)`;
         values.push(val);
       }
 
@@ -239,7 +274,7 @@ class Music {
         return string;
       };
       console.log("loopVals", loopVals());
-      const query = `INSERT INTO playlists (id, user_id, name) VALUES
+      const query = `INSERT INTO playlists (id, user_id, name, in_db) VALUES
       ${loopVals()}
       ON CONFLICT (id) DO UPDATE SET
       user_id = EXCLUDED.user_id, name = EXCLUDED.name;`;
@@ -248,6 +283,20 @@ class Music {
     } catch (error) {
       console.error("Error inserting data:", error);
     }
+  }
+  async getUsersPlaylists(username) {
+    const res = await db.query(
+      `SELECT id
+   FROM users
+   WHERE username = $1`,
+      [username]
+    );
+    const userId = res.rows[0].id;
+    const playlistsRes = await db.query(
+      `SELECT id, name FROM playlists WHERE user_id = $1`,
+      [userId]
+    );
+    return playlistsRes.rows;
   }
   async insertStartPlaylist(username) {
     try {
@@ -258,8 +307,8 @@ class Music {
         [username]
       );
       await db.query(
-        `INSERT INTO playlists (id, user_id, name) VALUES
-      ($1, $2, $3)
+        `INSERT INTO playlists (id, user_id, name, in_db) VALUES
+      ($1, $2, $3, TRUE)
       ON CONFLICT (id) DO UPDATE SET
       user_id = EXCLUDED.user_id, name = EXCLUDED.name;`,
         [userId.rows[0].id, userId.rows[0].id, `${username}s liked songs`]
@@ -302,6 +351,19 @@ class Music {
       return "success!";
     } catch (error) {
       console.error("Error inserting data:", error);
+    }
+  }
+
+  async alterPlaylistStatus(id) {
+    try {
+      const query = `UPDATE playlists
+  SET in_db = TRUE
+  WHERE id = '${id}';
+  `;
+      await db.query(query);
+      return "success!";
+    } catch (error) {
+      console.error("Error updating data:", error);
     }
   }
 

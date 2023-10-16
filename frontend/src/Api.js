@@ -68,25 +68,25 @@ class SpotifyApi {
       client_id: clientId,
       code_verifier: codeVerifier,
     });
-    const response = fetch("https://accounts.spotify.com/api/token", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: body,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("HTTP status " + response.status);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        localStorage.setItem("access_token", data.access_token);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
+
+    try {
+      const response = await fetch("https://accounts.spotify.com/api/token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: body,
       });
+
+      if (!response.ok) {
+        throw new Error("HTTP status " + response.status);
+      }
+
+      const data = await response.json();
+      localStorage.setItem("access_token", data.access_token);
+    } catch (error) {
+      console.error("Error:", error);
+    }
   }
 
   // async getPlaylists() {

@@ -44,6 +44,7 @@ router.get("/music-deets", async function (req, res, next) {
   }
 });
 router.put("/update-db", async function (req, res, next) {
+  console.log("db updating");
   const token = req.body.token;
   const username = req.body.username;
   console.log(req.body);
@@ -53,13 +54,16 @@ router.put("/update-db", async function (req, res, next) {
 
   try {
     const response = await spotifyApi.getTracksFeatures(token);
-    // await dbConnection.insertManyIntoSongs(response);
-    // const responseFromDb2 = await dbConnection.insertSongsToUsers(
-    //   response[0],
-    //   username
-    // );
-    // await dbConnection.insertStartPlaylist(username);
+    await dbConnection.insertManyIntoSongs(response);
+    const responseFromDb2 = await dbConnection.insertSongsToUsers(
+      response[0],
+      username
+    );
+    await dbConnection.insertStartPlaylist(username);
     await dbConnection.insertSongsToPlaylists(response[0], username);
+    const responsePlaylists = await spotifyApi.getPlaylists(token);
+    await dbConnection.insertPLaylists(responsePlaylists, username);
+    console.log("db updated");
     return res.json({ responseFromDb2 });
   } catch (err) {
     return next(err);
@@ -93,6 +97,25 @@ router.put("/update-playlists", async function (req, res, next) {
     );
     console.log("response from db", responseFromDb);
     return res.json({ responseFromDb });
+  } catch (err) {
+    return next(err);
+  }
+});
+
+router.post("/add-playlist", async function (req, res, next) {
+  const token = req.body.token;
+  const id = req.body.id;
+  const username = req.body.username;
+  try {
+    const response = await spotifyApi.getTracksFeatures(token, id);
+    await dbConnection.insertManyIntoSongs(response);
+    const responseFromDb2 = await dbConnection.insertSongsToUsers(
+      response[0],
+      username
+    );
+    await dbConnection.insertSongsToPlaylists(response[0], username);
+    await dbConnection.alterPlaylistStatus(id);
+    return res.json(responseFromDb2);
   } catch (err) {
     return next(err);
   }

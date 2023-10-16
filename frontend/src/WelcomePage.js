@@ -2,33 +2,25 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import SpotifyApi from "./Api";
 import BackendApi from "./backendApi";
-// import axios from "axios";
-// const WelcomePage = () => {
-//   new SpotifyApi.accessToken();
+import Playlists from "./Playlists";
+import { name } from "mustache";
 
-//   return (
-//     <div>
-//       <h1>done my bro</h1>
-//     </div>
-//   );
-// };
-
-// export default WelcomePage;
 const WelcomePage = () => {
   const [searchParams] = useSearchParams();
+  const [currUser, setCurrUser] = useState(null);
+  const [playlists, setPlaylists] = useState([]);
+  const [loading, setLoading] = useState(true);
   const spotifyApi = new SpotifyApi();
   const backendApi = new BackendApi();
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("access_token");
+    async function fetchData() {
+      const accessToken = localStorage.getItem("access_token");
 
-    if (!accessToken) {
-      console.log("i run once");
-
-      async function fetchData() {
+      if (!accessToken) {
         try {
           const res = await spotifyApi.accessToken(searchParams.get("code"));
-          console.log(res);
+
           if (res) {
             // Set a flag in local storage to indicate that the request has been made
             localStorage.setItem("access_token_requested", "true");
@@ -36,21 +28,71 @@ const WelcomePage = () => {
         } catch (error) {
           console.error(error);
         }
-      }
 
-      fetchData();
+        const getCurrUser = async () => {
+          const res = await backendApi.getCurruser(
+            localStorage.getItem("access_token")
+          );
+          const username = res.data.response.display_name;
+          localStorage.setItem("username", username);
+          setCurrUser(username);
+        };
+
+        getCurrUser();
+      }
     }
+    fetchData();
   }, []);
 
-  const updateDatabase = async () => {
-    const res = await backendApi.updateDb(localStorage.getItem("access_token"));
-    console.log(res);
-  };
-  const updateUser = async () => {
-    const res = await backendApi.updateUser(
-      localStorage.getItem("access_token")
+  useEffect(() => {
+    console.log("second use effect");
+    const checkForUserInDb = async () => {
+      const res = await backendApi.checkDbForCurrUser(
+        localStorage.getItem("username")
+      );
+      console.log(res.data.userExists);
+      return res.data.userExists;
+    };
+    const updateDatabase = async () => {
+      console.log("updating");
+      const res = await backendApi.updateDb(
+        localStorage.getItem("access_token")
+      );
+      console.log(res);
+    };
+    const updateUser = async () => {
+      const res = await backendApi.updateUser(
+        localStorage.getItem("access_token")
+      );
+      console.log(res);
+    };
+    const getPlaylists = async () => {
+      const res = await backendApi.userPlaylists(
+        localStorage.getItem("username")
+      );
+      console.log(res.data.response);
+      setPlaylists(res.data.response);
+    };
+    const updateAll = async () => {
+      const userExists = await checkForUserInDb();
+      if (!userExists) {
+        await updateUser();
+        await updateDatabase();
+      }
+      await getPlaylists(localStorage.getItem("username"));
+      setLoading(false);
+    };
+    updateAll();
+  }, [currUser]);
+
+  const addPlaylistToDb = async (id) => {
+    setLoading(true);
+    await backendApi.addPlaylistToDb(
+      id,
+      localStorage.getItem("access_token"),
+      localStorage.getItem("username")
     );
-    console.log(res);
+    setLoading(false);
   };
 
   const INITIAL_STATE = {
@@ -74,33 +116,10 @@ const WelcomePage = () => {
     setFormData(INITIAL_STATE);
   };
 
-  const getPlaylists = async () => {
-    const res = await backendApi.getPlaylists(
-      localStorage.getItem("access_token")
-    );
-    console.log(res);
-  };
-  const getCurrUser = async () => {
-    const res = await backendApi.getCurruser(
-      localStorage.getItem("access_token")
-    );
-    console.log(res);
-  };
-  const getMusicDeets = async () => {
-    const res = await backendApi.getMusicDeets(
-      localStorage.getItem("access_token")
-    );
-    console.log(res);
-  };
-
-  return (
+  const loadingPage = <h1>Loading</h1>;
+  const form = () => (
     <div>
-      <h1>done my bro</h1>
-      <button onClick={() => getCurrUser()}>get CurrUser</button>
-      <button onClick={() => getPlaylists()}>get playlists</button>
-      <button onClick={() => getMusicDeets()}>get music deets</button>
-      <button onClick={() => updateDatabase()}>update DB</button>
-      <button onClick={() => updateUser()}>update user</button>
+      <h1>welcome {localStorage.getItem("username")}</h1>
       <form onSubmit={handleSubmit}>
         <label>
           Prompt
@@ -113,8 +132,19 @@ const WelcomePage = () => {
         </label>
         <input type="submit" value="Submit" />
       </form>
+
+      {playlists.map((item) => (
+        <Playlists
+          key={item.id}
+          id={item.id}
+          name={item.name}
+          addPlaylistToDb={addPlaylistToDb}
+        />
+      ))}
     </div>
   );
+
+  return <div>{loading ? loadingPage : form()}</div>;
 };
 
 export default WelcomePage;

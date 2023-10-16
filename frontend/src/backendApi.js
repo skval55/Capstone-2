@@ -32,6 +32,13 @@ class BackendApi {
     return res;
   };
 
+  userPlaylists = async (username) => {
+    const res = await axios.get(
+      `http://localhost:3001/music/playlists/${username}`
+    );
+    return res;
+  };
+
   getPlaylists = async (token) => {
     console.log(token);
     const res = await axios.put(
@@ -42,12 +49,10 @@ class BackendApi {
     return res;
   };
   getCurruser = async (token) => {
-    console.log(token);
     const res = await axios.get("http://localhost:3001/spotify/curr-user", {
       headers: { token },
     });
-    console.log("res");
-    console.log(res);
+
     return res;
   };
   getMusicDeets = async (token) => {
@@ -58,6 +63,21 @@ class BackendApi {
     console.log("res");
     console.log(res);
     return res;
+  };
+  checkDbForCurrUser = async (username) => {
+    const res = await axios.get(
+      `http://localhost:3001/music/check-curr-user/${username}`
+    );
+
+    return res;
+  };
+  addPlaylistToDb = async (id, token, username) => {
+    const res = await axios.post("http://localhost:3001/spotify/add-playlist", {
+      id,
+      token,
+      username,
+    });
+    console.log(res);
   };
 }
 export default BackendApi;

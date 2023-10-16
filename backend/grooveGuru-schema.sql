@@ -39,12 +39,13 @@ CREATE TABLE playlists (
   id varchar PRIMARY KEY,
   user_id integer,
   name varchar,
+  in_db boolean,
   FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
 -- Create the 'songs_to_playlists' table
 CREATE TABLE songs_to_playlists (
-  song_id varchar PRIMARY KEY,
+  song_id varchar,
   playlist_id varchar ,
   FOREIGN KEY (song_id) REFERENCES songs (id),
   FOREIGN KEY (playlist_id) REFERENCES playlists (id)

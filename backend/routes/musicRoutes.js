@@ -31,6 +31,27 @@ router.post("/search", async function (req, res, next) {
   }
 });
 
+router.get("/playlists/:username", async function (req, res, next) {
+  try {
+    const username = req.params.username;
+    console.log(username);
+    console.log("username **********************************");
+    const response = await practiceRun.getUserPlaylists(username);
+    return res.json({ response });
+  } catch (err) {
+    return next(err);
+  }
+});
+router.get("/check-curr-user/:username", async function (req, res, next) {
+  try {
+    const username = req.params.username;
+    const response = await practiceRun.checkIfUserExists(username);
+    return res.json({ userExists: response });
+  } catch (err) {
+    return next(err);
+  }
+});
+
 router.post("/insert-db", async function (req, res, next) {
   try {
     const { userInfo, musicInfo, prompts } = req.body;
