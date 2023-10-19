@@ -21,8 +21,12 @@ const { BadRequestError } = require("../expressError");
 
 router.post("/search", async function (req, res, next) {
   try {
-    const { prompt } = req.body;
-    const response = await practiceRun.searchSongs(prompt);
+    const { prompt, username, count } = req.body;
+    const response = await practiceRun.searchSongsUserId(
+      prompt,
+      username,
+      count
+    );
     console.log("from routes");
     console.log(response);
     return res.json({ response });

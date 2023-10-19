@@ -72,6 +72,19 @@ class Music {
   //       console.error("Error inserting data:", error);
   //     }
   //   }
+  async getUserId(username) {
+    const res = await db.query(
+      `SELECT id
+   FROM users
+   WHERE username = $1`,
+      [username]
+    );
+
+    console.log("userId*******************");
+    const userId = res.rows[0].id;
+    console.log(userId);
+    return userId;
+  }
   async checkIfUserExists(username) {
     try {
       const res = await db.query(
@@ -97,7 +110,7 @@ class Music {
       const userId = res.rows[0].id;
 
       const playlistsRes = await db.query(
-        `SELECT id, name FROM playlists WHERE user_id = $1`,
+        `SELECT id, name, in_db FROM playlists WHERE user_id = $1`,
         [userId]
       );
       console.log("res from playlists", playlistsRes.rows);
@@ -128,6 +141,38 @@ class Music {
       console.error("Error searching songs:", error);
     }
   }
+  async searchSongsUserId(input, username, count) {
+    console.log(count);
+    console.log("count****************");
+    try {
+      const userId = await this.getUserId(username);
+      const embedding = await main(input);
+
+      // Assuming the embedding is stored as an array in the database
+      const embeddingString = JSON.stringify(embedding[0].embedding);
+
+      const query = await db.query(
+        `
+      SELECT s.id, s.title, s.artist, s.album, s.img_url, s.mp3_url
+      FROM songs AS s
+      LEFT JOIN songs_to_users AS su ON s.id = su.song_id AND su.user_id = $1
+      ORDER BY 1 - (s.embedding <=> '[${embedding[0].embedding.toString()}]') DESC
+      LIMIT $2;
+      
+          `,
+        [userId, count]
+      );
+
+      console.log(query.rows);
+      console.log(count);
+      console.log("count****************");
+      return query.rows;
+    } catch (error) {
+      console.error("Error searching songs:", error);
+    }
+  }
+
+  async searchSongsWithPlaylistId(input, playlist_id) {}
 
   async insert(id, username, input) {
     try {
@@ -367,7 +412,6 @@ class Music {
     }
   }
 
-  async searchSongsWithUserId() {}
   async searchSongsWithPlaylistId() {}
 
   async deleteSongFromUser() {}

@@ -208,6 +208,8 @@ class SpotifyApi {
     }
     return [trackInfo, promptArr];
   }
+
+  async createPlaylist() {}
 }
 
 module.exports = SpotifyApi;
