@@ -1,11 +1,32 @@
 import React, { useEffect, useState } from "react";
-import SpotifyApi from "./Api";
-import BackendApi from "./backendApi";
+// import SpotifyApi from "./Api";
+// import BackendApi from "./backendApi";
 
-const Playlists = ({ id, name, addPlaylistToDb }) => {
+const Playlists = ({ id, name, inDb, addPlaylistToDb }) => {
+  let btnClass = inDb
+    ? "btn btn-outline btn-primary btn-disabled"
+    : "btn btn-outline btn-primary ";
+
   return (
     <li>
-      <button onClick={() => addPlaylistToDb(id)}>{name}</button>
+      <button
+        className={btnClass}
+        onClick={() => {
+          addPlaylistToDb(id);
+        }}
+      >
+        {name}
+      </button>
+      {inDb ? (
+        <div>
+          Added
+          <input
+            type="checkbox"
+            defaultChecked
+            className="checkbox checkbox-primary "
+          />
+        </div>
+      ) : null}
     </li>
   );
 };

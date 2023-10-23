@@ -21,15 +21,30 @@ const { BadRequestError } = require("../expressError");
 
 router.post("/search", async function (req, res, next) {
   try {
-    const { prompt, username, count } = req.body;
-    const response = await practiceRun.searchSongsUserId(
-      prompt,
-      username,
-      count
-    );
-    console.log("from routes");
-    console.log(response);
-    return res.json({ response });
+    const { prompt, username, count, playlist_id } = req.body;
+    console.log(playlist_id);
+    console.log("playlist id ***********************");
+
+    if (playlist_id === "all-songs") {
+      const response = await practiceRun.searchSongsUserId(
+        prompt,
+        username,
+        count
+      );
+      console.log("from routes");
+      console.log(response);
+      return res.json({ response });
+    } else {
+      console.log("*********************seearched with playlist*********");
+      const response = await practiceRun.searchSongsWithPlaylistId(
+        prompt,
+        playlist_id,
+        count
+      );
+      console.log("from routes");
+      console.log(response);
+      return res.json({ response });
+    }
   } catch (err) {
     return next(err);
   }

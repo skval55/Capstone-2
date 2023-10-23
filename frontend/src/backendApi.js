@@ -24,10 +24,15 @@ class BackendApi {
     }
   };
 
-  searchSongs = async (prompt) => {
+  searchSongs = async (prompt, count, playlist_id) => {
     const res = await axios.post("http://localhost:3001/music/search", {
       prompt,
+      username: localStorage.getItem("username"),
+      count,
+      playlist_id,
     });
+    console.log(count);
+    console.log("count from backend API");
     console.log(res);
     return res;
   };

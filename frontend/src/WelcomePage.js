@@ -4,20 +4,29 @@ import SpotifyApi from "./Api";
 import BackendApi from "./backendApi";
 import Playlists from "./Playlists";
 import { name } from "mustache";
+import PromptForm from "./PromptForm";
+import Songs from "./Song";
+import SongList from "./SongList";
 
 const WelcomePage = () => {
   const [searchParams] = useSearchParams();
   const [currUser, setCurrUser] = useState(null);
   const [playlists, setPlaylists] = useState([]);
+  const [playlistsInDb, setPlaylistsInDb] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currSongs, setCurrSongs] = useState([]);
   const spotifyApi = new SpotifyApi();
   const backendApi = new BackendApi();
+  let useEffectBool = true;
 
   useEffect(() => {
     async function fetchData() {
       const accessToken = localStorage.getItem("access_token");
 
-      if (!accessToken) {
+      if (!currUser && useEffectBool) {
+        useEffectBool = false;
+        console.log("first use effect");
+
         try {
           const res = await spotifyApi.accessToken(searchParams.get("code"));
 
@@ -46,10 +55,8 @@ const WelcomePage = () => {
 
   useEffect(() => {
     console.log("second use effect");
-    const checkForUserInDb = async () => {
-      const res = await backendApi.checkDbForCurrUser(
-        localStorage.getItem("username")
-      );
+    const checkForUserInDb = async (username) => {
+      const res = await backendApi.checkDbForCurrUser(username);
       console.log(res.data.userExists);
       return res.data.userExists;
     };
@@ -74,19 +81,34 @@ const WelcomePage = () => {
       setPlaylists(res.data.response);
     };
     const updateAll = async () => {
-      const userExists = await checkForUserInDb();
-      if (!userExists) {
-        await updateUser();
-        await updateDatabase();
+      if (localStorage.getItem("username")) {
+        const userExists = await checkForUserInDb(
+          localStorage.getItem("username")
+        );
+        if (!userExists) {
+          await updateUser();
+          await updateDatabase();
+        }
+        await getPlaylists(localStorage.getItem("username"));
+        setPlaylistsInDb(
+          playlists.filter((playlist) => playlist.in_db === true)
+        );
+        setLoading(false);
       }
-      await getPlaylists(localStorage.getItem("username"));
-      setLoading(false);
     };
     updateAll();
   }, [currUser]);
 
   const addPlaylistToDb = async (id) => {
     setLoading(true);
+    const newPlaylists = playlists.map((playlist) => {
+      if (playlist.id === id) {
+        playlist.in_db = true;
+        setPlaylistsInDb([...playlistsInDb, playlist]);
+      }
+      return playlist;
+    });
+    setPlaylists(newPlaylists);
     await backendApi.addPlaylistToDb(
       id,
       localStorage.getItem("access_token"),
@@ -95,52 +117,46 @@ const WelcomePage = () => {
     setLoading(false);
   };
 
-  const INITIAL_STATE = {
-    prompt: "",
-  };
-  const [formData, setFormData] = useState(INITIAL_STATE);
-
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((formData) => ({
-      ...formData,
-      [id]: value,
-    }));
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // await login(formData);
-    const res = await backendApi.searchSongs(formData.prompt);
-    console.log("frontend");
-    console.log(res);
-    setFormData(INITIAL_STATE);
-  };
-
   const loadingPage = <h1>Loading</h1>;
   const form = () => (
     <div>
       <h1>welcome {localStorage.getItem("username")}</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Prompt
-          <input
-            id="prompt"
-            type="text"
-            value={formData.prompt}
-            onChange={handleChange}
-          />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
+      <div className="drawer">
+        <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+        <div className="drawer-content">
+          {/* Page content here */}
+          <label htmlFor="my-drawer" className="btn btn-primary drawer-button">
+            Open drawer
+          </label>
+        </div>
+        <div className="drawer-side">
+          <label
+            htmlFor="my-drawer"
+            aria-label="close sidebar"
+            className="drawer-overlay"
+          ></label>
+          <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+            {/* Sidebar content here */}
 
-      {playlists.map((item) => (
-        <Playlists
-          key={item.id}
-          id={item.id}
-          name={item.name}
-          addPlaylistToDb={addPlaylistToDb}
-        />
-      ))}
+            {playlists.map((item) => (
+              <Playlists
+                key={item.id}
+                id={item.id}
+                name={item.name}
+                inDb={item.in_db}
+                addPlaylistToDb={addPlaylistToDb}
+              />
+            ))}
+          </ul>
+        </div>
+      </div>
+      <PromptForm
+        setCurrSongs={setCurrSongs}
+        currSongs={currSongs}
+        playlistsInDb={playlistsInDb}
+      />
+      <button onClick={() => console.log(playlistsInDb)}>click me</button>
+      <SongList currSongs={currSongs} />
     </div>
   );
 

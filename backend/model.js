@@ -156,6 +156,7 @@ class Music {
       SELECT s.id, s.title, s.artist, s.album, s.img_url, s.mp3_url
       FROM songs AS s
       LEFT JOIN songs_to_users AS su ON s.id = su.song_id AND su.user_id = $1
+      WHERE su.user_id = $1
       ORDER BY 1 - (s.embedding <=> '[${embedding[0].embedding.toString()}]') DESC
       LIMIT $2;
       
@@ -172,7 +173,46 @@ class Music {
     }
   }
 
-  async searchSongsWithPlaylistId(input, playlist_id) {}
+  async searchSongsWithPlaylistId(input, playlist_id, count) {
+    try {
+      // const userId = await this.getUserId(username);
+      const embedding = await main(input);
+
+      // Assuming the embedding is stored as an array in the database
+      const embeddingString = JSON.stringify(embedding[0].embedding);
+
+      const query = await db.query(
+        `
+    SELECT s.id, s.title, s.artist, s.album, s.img_url, s.mp3_url
+    FROM songs AS s
+    LEFT JOIN songs_to_playlists AS sp ON s.id = sp.song_id AND sp.playlist_id = $1
+    WHERE sp.playlist_id = $1
+    ORDER BY 1 - (s.embedding <=> '[${embedding[0].embedding.toString()}]') DESC
+    LIMIT $2;
+    
+        `,
+        [playlist_id, count]
+      );
+      //   const query = await db.query(
+      //     `
+      // SELECT s.id, s.title, s.artist, s.album, s.img_url, s.mp3_url
+      // FROM songs AS s
+      // LEFT JOIN songs_to_playlists AS sp ON s.id = sp.song_id AND sp.playlist_id = $1
+      // ORDER BY 1 - (s.embedding <=> '[${embedding[0].embedding.toString()}]') DESC
+      // LIMIT $2;
+
+      //     `,
+      //     [playlist_id, count]
+      //   );
+
+      console.log(query.rows);
+      console.log(count);
+      console.log("count****************");
+      return query.rows;
+    } catch (error) {
+      console.error("Error searching songs:", error);
+    }
+  }
 
   async insert(id, username, input) {
     try {
@@ -411,8 +451,6 @@ class Music {
       console.error("Error updating data:", error);
     }
   }
-
-  async searchSongsWithPlaylistId() {}
 
   async deleteSongFromUser() {}
   async deleteSongFromPlaylist() {}
