@@ -4,6 +4,7 @@ const cors = require("cors");
 const SpotifyApi = require("../spotifyApi");
 const { Music, practiceRun } = require("../model");
 const { BadRequestError } = require("../expressError");
+
 require("dotenv").config();
 
 const spotifyApi = new SpotifyApi();
@@ -116,6 +117,26 @@ router.post("/add-playlist", async function (req, res, next) {
     await dbConnection.insertSongsToPlaylists(response[0], username);
     await dbConnection.alterPlaylistStatus(id);
     return res.json(responseFromDb2);
+  } catch (err) {
+    return next(err);
+  }
+});
+
+router.post("/create-playlist", async function (req, res, next) {
+  console.log("create playlist route hit!");
+  const name = req.body.name;
+  const description = req.body.description;
+  const username = req.body.username;
+  console.log(name);
+  console.log(description);
+  // console.log(songs);
+  try {
+    const response = await spotifyApi.createPlaylist(
+      name,
+      description,
+      username
+    );
+    console.log(response);
   } catch (err) {
     return next(err);
   }

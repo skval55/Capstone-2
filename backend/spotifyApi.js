@@ -209,7 +209,22 @@ class SpotifyApi {
     return [trackInfo, promptArr];
   }
 
-  async createPlaylist() {}
+  async createPlaylist(name, description, username) {
+    console.log("spotify api hit!");
+    console.log(username);
+    const res = await axios.post(
+      `https://api.spotify.com/v1/users/${username}/playlists`,
+      {
+        body: {
+          name: name,
+          description: description,
+          public: false,
+        },
+      }
+    );
+    console.log("**8888888*88******88**88*8888888*8*88**8z");
+    console.log(res);
+  }
 }
 
 module.exports = SpotifyApi;

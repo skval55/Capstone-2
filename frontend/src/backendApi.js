@@ -84,5 +84,17 @@ class BackendApi {
     });
     console.log(res);
   };
+  createPlaylist = async (name, description, songs) => {
+    const res = await axios.post(
+      "http://localhost:3001/spotify/create-playlist",
+      {
+        name,
+        description,
+        username: localStorage.getItem("username"),
+        songs,
+      }
+    );
+    console.log(res);
+  };
 }
 export default BackendApi;

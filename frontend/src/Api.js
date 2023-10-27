@@ -39,7 +39,8 @@ class SpotifyApi {
 
     generateCodeChallenge(codeVerifier).then((codeChallenge) => {
       let state = generateRandomString(16);
-      let scope = "user-read-private user-read-email user-library-read";
+      let scope =
+        "user-read-private user-read-email user-library-read playlist-modify-public playlist-modify-private";
 
       localStorage.setItem("code_verifier", codeVerifier);
 
