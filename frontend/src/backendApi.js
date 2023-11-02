@@ -92,6 +92,7 @@ class BackendApi {
         description,
         username: localStorage.getItem("username"),
         songs,
+        token: localStorage.getItem("access_token"),
       }
     );
     console.log(res);

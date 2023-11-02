@@ -24,6 +24,7 @@ const Songs = ({
       set = selectedSongs;
     } else set = selectedSongs.add(id);
     setSelectedSongs(set);
+    console.log("set", set);
     console.log(selectedSongs);
   };
   return (

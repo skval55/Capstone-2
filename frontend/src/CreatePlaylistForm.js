@@ -48,6 +48,7 @@ const CreatePlaylistForm = ({ selectedSongs, createPlaylist }) => {
           onChange={handleChange}
         />
       </label>
+
       <button className="text-success">Create Playlist</button>
     </form>
   );

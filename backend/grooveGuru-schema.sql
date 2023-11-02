@@ -1,10 +1,16 @@
 -- Create the 'songs' table
 
-DROP TABLE songs_to_users CASCADE;
-DROP TABLE songs CASCADE;
-DROP TABLE users CASCADE;
-DROP TABLE playlists CASCADE;
-DROP TABLE songs_to_playlists CASCADE;
+-- CREATE DATABASE music_search_test;
+
+-- -- connect to db
+
+-- CREATE EXTENSION vector;
+
+DROP TABLE IF EXISTS songs_to_users CASCADE;
+DROP TABLE IF EXISTS songs CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS playlists CASCADE;
+DROP TABLE IF EXISTS songs_to_playlists CASCADE;
 -- DROP TABLE songs2;
 -- DROP TABLE songs3;
 

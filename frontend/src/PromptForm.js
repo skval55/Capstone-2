@@ -62,6 +62,18 @@ const PromptForm = ({ setCurrSongs, currSongs, playlistsInDb }) => {
           <option value={playlist.id}>{playlist.name}</option>
         ))}
       </select>
+      <input
+        name="filterOrCreate"
+        type="radio"
+        aria-label="Filter"
+        className="btn"
+      />
+      <input
+        name="filterOrCreate"
+        type="radio"
+        aria-label="Create"
+        className="btn"
+      />
       <input type="submit" value="Submit" />
     </form>
   );

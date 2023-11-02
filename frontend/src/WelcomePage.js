@@ -7,6 +7,7 @@ import { name } from "mustache";
 import PromptForm from "./PromptForm";
 import Songs from "./Song";
 import SongList from "./SongList";
+import LoadingPage from "./LoadingPage";
 
 const WelcomePage = () => {
   const [searchParams] = useSearchParams();
@@ -43,7 +44,9 @@ const WelcomePage = () => {
             localStorage.getItem("access_token")
           );
           const username = res.data.response.display_name;
+          const user_id = res.data.response.id;
           localStorage.setItem("username", username);
+          localStorage.setItem("user_id", user_id);
           setCurrUser(username);
         };
 
@@ -160,7 +163,12 @@ const WelcomePage = () => {
     </div>
   );
 
-  return <div>{loading ? loadingPage : form()}</div>;
+  // return <div>{loading ? <LoadingPage /> : form()}</div>;
+  return (
+    <div>
+      <LoadingPage />
+    </div>
+  );
 };
 
 export default WelcomePage;

@@ -6,15 +6,16 @@ import BackendApi from "./backendApi";
 const SongList = ({ currSongs }) => {
   const backendApi = new BackendApi();
   const [selectedSongs, setSelectedSongs] = useState(new Set());
-
+  console.log(selectedSongs);
+  useEffect(() => {
+    console.log("selectedSongs from songlist", selectedSongs);
+  }, [selectedSongs]);
   const createPlaylist = (formData) => {
     console.log("name", formData.name, "description", formData.description);
     console.log("songs", selectedSongs);
-    backendApi.createPlaylist(
-      formData.name,
-      formData.description,
-      selectedSongs
-    );
+    backendApi.createPlaylist(formData.name, formData.description, [
+      ...selectedSongs,
+    ]);
   };
 
   const songs = () => {

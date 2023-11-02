@@ -209,21 +209,58 @@ class SpotifyApi {
     return [trackInfo, promptArr];
   }
 
-  async createPlaylist(name, description, username) {
+  async createPlaylist(name, description, username, token) {
     console.log("spotify api hit!");
     console.log(username);
-    const res = await axios.post(
-      `https://api.spotify.com/v1/users/${username}/playlists`,
-      {
-        body: {
+    try {
+      const res = await axios.post(
+        `https://api.spotify.com/v1/users/${username}/playlists`,
+        {
           name: name,
           description: description,
           public: false,
         },
-      }
-    );
-    console.log("**8888888*88******88**88*8888888*8*88**8z");
-    console.log(res);
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json", // Set the Content-Type header
+          },
+        }
+      );
+
+      console.log("**8888888*88******88**88*8888888*8*88**8z");
+      console.log(res.data.id);
+      return res.data.id;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async addSongsToPlaylist(playlist_id, songs, token) {
+    console.log(songs);
+    const uris = songs.map((song) => `spotify:track:${song}`);
+    console.log(uris);
+    try {
+      const res = await axios.post(
+        `https://api.spotify.com/v1/playlists/${playlist_id}/tracks`,
+        {
+          uris: uris,
+          position: 0,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json", // Set the Content-Type header
+          },
+        }
+      );
+
+      console.log("**8888888*88******88**88*8888888*8*88**8z");
+      console.log(res);
+      return res;
+    } catch (e) {
+      console.error(e);
+    }
   }
 }
 
