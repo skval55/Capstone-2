@@ -37,14 +37,30 @@ const SongList = ({ currSongs }) => {
   };
   return (
     <div>
-      <ul className="menu bg-base-200 w-56 [&_li>*]:rounded-none">
-        {currSongs.length > 0 ? songs() : <p>Search Songs</p>}
+      <ul className="menu bg-base-200 w-screen [&_li>*]:rounded-none">
+        {currSongs.length > 0 ? (
+          <div>
+            <p className="text-3xl text-zinc-500 font-[500] sm:text-4xl">
+              Choose Songs
+            </p>
+            {songs()}
+          </div>
+        ) : (
+          <div>
+            <p className="text-3xl text-zinc-500 font-[500] sm:text-4xl">
+              Search Songs
+            </p>
+            <p className="h-64 text-zinc-500">
+              songs will appear here after Search
+            </p>
+          </div>
+        )}
       </ul>
-
+      {/* 
       <CreatePlaylistForm
         selectedSongs={selectedSongs}
         createPlaylist={createPlaylist}
-      />
+      /> */}
     </div>
   );
 };

@@ -36,33 +36,71 @@ const PromptForm = ({ setCurrSongs, currSongs, playlistsInDb }) => {
     }));
   };
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Prompt
-        <input
-          id="prompt"
-          type="text"
-          value={formData.prompt}
+    <form className="w-screen" onSubmit={handleSubmit}>
+      <div className="form-control  mx-20 ">
+        <select
+          className="select bg-black  max-w-xs"
           onChange={handleChange}
-        />
-      </label>
-      <label>
+          id="playlist_id"
+          name="playlist_id"
+        >
+          <option disabled selected>
+            Choose a playlist to search
+          </option>
+          <option value="all-songs">all songs in GrooveGuru</option>
+          {playlistsInDb.map((playlist) => (
+            <option value={playlist.id}>{playlist.name}</option>
+          ))}
+        </select>
+        {/* <button className="btn">Go</button> */}
+      </div>
+
+      <div className="form-control mx-10 my-5">
+        <div className="input-group ">
+          <input
+            type="text"
+            placeholder="Enter genre, mood, or feeling"
+            className="input input-bordered w-full bg-black"
+            id="prompt"
+            value={formData.prompt}
+            onChange={handleChange}
+          />
+          <button className="btn btn-square">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* <label>
         count
-        <input
-          id="count"
-          type="number"
-          value={formData.count}
-          onChange={handleChange}
-        />
-      </label>
-      <label htmlFor="playlist">Choose a playlist:</label>
-      <select onChange={handleChange} id="playlist_id" name="playlist_id">
-        <option value="all-songs">all songs in GrooveGuru</option>
-        {playlistsInDb.map((playlist) => (
-          <option value={playlist.id}>{playlist.name}</option>
-        ))}
-      </select>
-      <input
+        <div className="form-control">
+          <label className="input-group input-group-vertical">
+            <span>count</span>
+            <input
+              id="count"
+              type="number"
+              value={formData.count}
+              onChange={handleChange}
+              className="input input-bordered"
+            />
+          </label>
+        </div>
+      </label> */}
+
+      {/* <input
         name="filterOrCreate"
         type="radio"
         aria-label="Filter"
@@ -73,8 +111,7 @@ const PromptForm = ({ setCurrSongs, currSongs, playlistsInDb }) => {
         type="radio"
         aria-label="Create"
         className="btn"
-      />
-      <input type="submit" value="Submit" />
+      /> */}
     </form>
   );
 };

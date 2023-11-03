@@ -8,6 +8,9 @@ import PromptForm from "./PromptForm";
 import Songs from "./Song";
 import SongList from "./SongList";
 import LoadingPage from "./LoadingPage";
+import NavBar from "./NavBar";
+import Drawer from "./Drawer";
+import Directions from "./Directions";
 
 const WelcomePage = () => {
   const [searchParams] = useSearchParams();
@@ -120,55 +123,28 @@ const WelcomePage = () => {
     setLoading(false);
   };
 
-  const loadingPage = <h1>Loading</h1>;
   const form = () => (
-    <div>
-      <h1>welcome {localStorage.getItem("username")}</h1>
-      <div className="drawer">
-        <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-content">
-          {/* Page content here */}
-          <label htmlFor="my-drawer" className="btn btn-primary drawer-button">
-            Open drawer
-          </label>
-        </div>
-        <div className="drawer-side">
-          <label
-            htmlFor="my-drawer"
-            aria-label="close sidebar"
-            className="drawer-overlay"
-          ></label>
-          <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
-            {/* Sidebar content here */}
-
-            {playlists.map((item) => (
-              <Playlists
-                key={item.id}
-                id={item.id}
-                name={item.name}
-                inDb={item.in_db}
-                addPlaylistToDb={addPlaylistToDb}
-              />
-            ))}
-          </ul>
-        </div>
+    <div className="bg-gradient-to-tr from-cyan-950 via-emerald-950 to-cyan-950">
+      <div className="bg-zinc-900/50 ">
+        <NavBar />
+        <Directions />
+        <Drawer playlists={playlists} addPlaylistToDb={addPlaylistToDb} />
+        <PromptForm
+          setCurrSongs={setCurrSongs}
+          currSongs={currSongs}
+          playlistsInDb={playlistsInDb}
+        />
+        <SongList currSongs={currSongs} />
       </div>
-      <PromptForm
-        setCurrSongs={setCurrSongs}
-        currSongs={currSongs}
-        playlistsInDb={playlistsInDb}
-      />
-      <button onClick={() => console.log(playlistsInDb)}>click me</button>
-      <SongList currSongs={currSongs} />
     </div>
   );
 
-  // return <div>{loading ? <LoadingPage /> : form()}</div>;
-  return (
-    <div>
-      <LoadingPage />
-    </div>
-  );
+  return <div>{loading ? <LoadingPage /> : form()}</div>;
+  // return (
+  //   <div>
+  //     <LoadingPage />
+  //   </div>
+  // );
 };
 
 export default WelcomePage;
