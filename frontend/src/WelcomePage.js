@@ -83,23 +83,23 @@ const WelcomePage = () => {
       const res = await backendApi.userPlaylists(
         localStorage.getItem("username")
       );
-      console.log(res.data.response);
-      setPlaylists(res.data.response);
+
+      return res.data.response;
     };
     const updateAll = async () => {
-      console.log(currUser, "currUser");
       if (currUser) {
         const userExists = await checkForUserInDb(currUser);
         if (!userExists) {
           await updateUser();
           await updateDatabase();
         }
-        await getPlaylists(currUser);
+        const playlistsResponse = await getPlaylists(currUser);
+        setPlaylists(playlistsResponse); // Set playlists after the response is received
         setPlaylistsInDb(
-          playlists.filter((playlist) => playlist.in_db === true)
+          playlistsResponse.filter((playlist) => playlist.in_db === true)
         );
         setLoading(false);
-      } else console.log("shrek 2 rules");
+      }
     };
     updateAll();
   }, [currUser]);
