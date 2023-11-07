@@ -157,11 +157,10 @@ class Music {
       FROM songs AS s
       LEFT JOIN songs_to_users AS su ON s.id = su.song_id AND su.user_id = $1
       WHERE su.user_id = $1
-      ORDER BY 1 - (s.embedding <=> '[${embedding[0].embedding.toString()}]') DESC
-      LIMIT $2;
+      ORDER BY 1 - (s.embedding <=> '[${embedding[0].embedding.toString()}]') DESC;
       
           `,
-        [userId, count]
+        [userId]
       );
 
       console.log(query.rows);
@@ -187,11 +186,10 @@ class Music {
     FROM songs AS s
     LEFT JOIN songs_to_playlists AS sp ON s.id = sp.song_id AND sp.playlist_id = $1
     WHERE sp.playlist_id = $1
-    ORDER BY 1 - (s.embedding <=> '[${embedding[0].embedding.toString()}]') DESC
-    LIMIT $2;
+    ORDER BY 1 - (s.embedding <=> '[${embedding[0].embedding.toString()}]') DESC;
     
         `,
-        [playlist_id, count]
+        [playlist_id]
       );
       //   const query = await db.query(
       //     `

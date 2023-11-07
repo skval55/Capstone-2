@@ -1,66 +1,10 @@
-// import React, { useState } from "react";
-// // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// // import { library } from "@fortawesome/fontawesome-svg-core";
-// // import { fab } from "@fortawesome/free-brands-svg-icons";
+import React, { useState, useRef, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fab } from "@fortawesome/free-brands-svg-icons";
+import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
 
-// // library.add(fab);
-
-// const Songs = ({
-//   id,
-//   name,
-//   artist,
-//   album,
-//   img_url,
-//   mp3_url,
-//   setSelectedSongs,
-//   selectedSongs,
-// }) => {
-//   const [active, setActive] = useState(false);
-//   const [playing, setPlaying] = useState(false);
-//   const changeClass = () => {
-//     setActive(!active);
-//   };
-
-//   const handleClick = () => {
-//     changeClass();
-
-//     let set;
-//     if (selectedSongs.has(id)) {
-//       selectedSongs.delete(id);
-//       set = selectedSongs;
-//     } else set = selectedSongs.add(id);
-//     setSelectedSongs(set);
-//     console.log("set", set);
-//     console.log(selectedSongs);
-//   };
-//   return (
-//     <div className="w-screen" onClick={() => handleClick()}>
-//       <li>
-//         <div className={active ? "active" : null}>
-//           <img
-//             width="64px"
-//             height="64px"
-//             src={img_url}
-//             alt={`${name} - ${artist}`}
-//           />
-//           <audio className={playing ? "play" : null}>
-//             <source src={mp3_url} type="audio/mpeg" />
-//           </audio>
-//           <button className="btn" onClick={() => setPlaying(true)}>
-//             {/* <FontAwesomeIcon icon="fa-solid fa-play" /> */}
-//             click
-//           </button>
-//           <p>{name}</p>
-//           <p>{artist}</p>
-//           <p>{album}</p>
-//         </div>
-//       </li>
-//     </div>
-//   );
-// };
-// export default Songs;
-
-import React, { useState, useRef } from "react";
+library.add(fab, faPause, faPlay);
 
 const Songs = ({
   id,
@@ -71,6 +15,8 @@ const Songs = ({
   mp3_url,
   setSelectedSongs,
   selectedSongs,
+  setPlayingSong,
+  playingSong,
 }) => {
   const [active, setActive] = useState(false);
   const [playing, setPlaying] = useState(false);
@@ -80,20 +26,20 @@ const Songs = ({
     setActive(!active);
   };
 
+  useEffect(() => {
+    if (playingSong !== id) setPlaying(false);
+  }, [playingSong]);
+
   const handleClick = () => {
     changeClass();
 
     let set;
     if (selectedSongs.has(id)) {
       selectedSongs.delete(id);
-      set = selectedSongs;
+      set = new Set([...selectedSongs]);
     } else {
       // Create a new Set with the currently selected song ID and clear the playback
-      set = new Set([id]);
-      if (audioRef.current) {
-        audioRef.current.pause();
-        setPlaying(false);
-      }
+      set = new Set([...selectedSongs, id]);
     }
     setSelectedSongs(set);
   };
@@ -110,32 +56,37 @@ const Songs = ({
         }
       }
       audioRef.current.play();
+      setPlayingSong(id);
     }
     setPlaying(!playing);
   };
 
+  let iconClass = playing ? "fa-solid fa-pause" : "fa-solid fa-play";
+
   return (
-    <div className="w-screen" onClick={() => handleClick()}>
-      <li>
-        <div className={active ? "active" : null}>
-          <img
-            width="64px"
-            height="64px"
-            src={img_url}
-            alt={`${name} - ${artist}`}
-          />
-          <audio ref={audioRef} className={playing ? "play" : null}>
-            <source src={mp3_url} type="audio/mpeg" />
-          </audio>
-          <button className="btn" onClick={() => togglePlay()}>
-            {playing ? "Pause" : "Play"}{" "}
-            {/* Toggle the label based on the playing state */}
-          </button>
-          <p>{name}</p>
-          <p>{artist}</p>
-          <p>{album}</p>
-        </div>
-      </li>
+    <div className="flex w-screen truncate">
+      <button className="btn w-10 ml-3 self-center ">
+        <FontAwesomeIcon icon={iconClass} onClick={() => togglePlay()} />
+      </button>
+      <div className="" onClick={() => handleClick()}>
+        <li>
+          <div className={active ? "active" : null}>
+            <div className="w-14">
+              <img src={img_url} alt={`${name} - ${artist}`} />
+            </div>
+            <audio ref={audioRef} className={playing ? "play" : null}>
+              <source src={mp3_url} type="audio/mpeg" />
+            </audio>
+
+            <div className="flex flex-col ">
+              <p className="truncate text-lg w-[60vw] font-semibold max-w-full md:w-[80vw] lg:w-[85vw]">
+                {name}
+              </p>
+              <p>{artist}</p>
+            </div>
+          </div>
+        </li>
+      </div>
     </div>
   );
 };

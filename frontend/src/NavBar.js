@@ -2,7 +2,7 @@ import React from "react";
 import logo from "./images/logo.png";
 const NavBar = () => {
   return (
-    <div className="navbar bg-zinc-800 fixed">
+    <div className="navbar bg-zinc-800 z-20 fixed">
       <div className="flex-1">
         <a className="btn btn-ghost ">
           <img className=" h-10" src={logo} alt="logo" />

@@ -87,20 +87,19 @@ const WelcomePage = () => {
       setPlaylists(res.data.response);
     };
     const updateAll = async () => {
-      if (localStorage.getItem("username")) {
-        const userExists = await checkForUserInDb(
-          localStorage.getItem("username")
-        );
+      console.log(currUser, "currUser");
+      if (currUser) {
+        const userExists = await checkForUserInDb(currUser);
         if (!userExists) {
           await updateUser();
           await updateDatabase();
         }
-        await getPlaylists(localStorage.getItem("username"));
+        await getPlaylists(currUser);
         setPlaylistsInDb(
           playlists.filter((playlist) => playlist.in_db === true)
         );
         setLoading(false);
-      }
+      } else console.log("shrek 2 rules");
     };
     updateAll();
   }, [currUser]);

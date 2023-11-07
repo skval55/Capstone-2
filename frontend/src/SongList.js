@@ -6,6 +6,7 @@ import BackendApi from "./backendApi";
 const SongList = ({ currSongs }) => {
   const backendApi = new BackendApi();
   const [selectedSongs, setSelectedSongs] = useState(new Set());
+  const [playinSong, setPlayingSong] = useState(null);
   console.log(selectedSongs);
   useEffect(() => {
     console.log("selectedSongs from songlist", selectedSongs);
@@ -31,13 +32,15 @@ const SongList = ({ currSongs }) => {
           img_url={song.img_url}
           setSelectedSongs={setSelectedSongs}
           selectedSongs={selectedSongs}
+          setPlayingSong={setPlayingSong}
+          playingSong={playinSong}
         />
       );
     });
   };
   return (
     <div>
-      <ul className="menu bg-base-200 w-screen [&_li>*]:rounded-none">
+      <ul className="menu bg-base-200 w-screen [&_li>*]:rounded-none px-0 ">
         {currSongs.length > 0 ? (
           <div>
             <p className="text-3xl text-zinc-500 font-[500] sm:text-4xl">
@@ -56,11 +59,13 @@ const SongList = ({ currSongs }) => {
           </div>
         )}
       </ul>
-      {/* 
+
       <CreatePlaylistForm
         selectedSongs={selectedSongs}
         createPlaylist={createPlaylist}
-      /> */}
+        currSongs={currSongs}
+        setSelectedSongs={setSelectedSongs}
+      />
     </div>
   );
 };

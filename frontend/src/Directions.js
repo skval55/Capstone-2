@@ -2,8 +2,8 @@ import React from "react";
 
 const Directions = () => {
   return (
-    <div className="flex flex-wrap place-content-around pt-16 pb-12 max-w-7xl w-full m-auto text-left">
-      <div className="w-64 sm:w-96 mx-4 my-8 mt-10">
+    <div className=" flex flex-wrap place-content-around pt-20 pb-12 max-w-7xl w-full m-auto text-left">
+      <div className="w-64 sm:w-96 mx-4 my-8 ">
         <h2 className="text-3xl text-zinc-50 font-[500] sm:text-4xl">
           <span className="text-action">1.</span>
           Search

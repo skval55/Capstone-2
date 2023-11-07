@@ -39,7 +39,7 @@ const PromptForm = ({ setCurrSongs, currSongs, playlistsInDb }) => {
     <form className="w-screen" onSubmit={handleSubmit}>
       <div className="form-control  mx-20 ">
         <select
-          className="select bg-black  max-w-xs"
+          className="select bg-black m-auto  max-w-xs"
           onChange={handleChange}
           id="playlist_id"
           name="playlist_id"
@@ -55,7 +55,7 @@ const PromptForm = ({ setCurrSongs, currSongs, playlistsInDb }) => {
         {/* <button className="btn">Go</button> */}
       </div>
 
-      <div className="form-control mx-10 my-5">
+      <div className="form-control mx-10 my-5 md:w-4/5 md:mx-auto lg:w-2/3">
         <div className="input-group ">
           <input
             type="text"
