@@ -140,12 +140,10 @@ router.post("/create-playlist", async function (req, res, next) {
       username,
       token
     );
-    const response = await spotifyApi.addSongsToPlaylist(
-      playlist_id,
-      songs,
-      token
-    );
-    console.log(response);
+    await spotifyApi.addSongsToPlaylist(playlist_id, songs, token);
+
+    console.log("true");
+    return res.json({ status: "success" });
   } catch (err) {
     return next(err);
   }

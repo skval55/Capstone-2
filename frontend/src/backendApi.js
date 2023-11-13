@@ -85,17 +85,15 @@ class BackendApi {
     console.log(res);
   };
   createPlaylist = async (name, description, songs) => {
-    const res = await axios.post(
-      "http://localhost:3001/spotify/create-playlist",
-      {
-        name,
-        description,
-        username: localStorage.getItem("username"),
-        songs,
-        token: localStorage.getItem("access_token"),
-      }
-    );
-    console.log(res);
+    await axios.post("http://localhost:3001/spotify/create-playlist", {
+      name,
+      description,
+      username: localStorage.getItem("username"),
+      songs,
+      token: localStorage.getItem("access_token"),
+    });
+    console.log("res from backendApi");
+    return true;
   };
 }
 export default BackendApi;

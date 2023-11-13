@@ -229,7 +229,7 @@ class SpotifyApi {
       );
 
       console.log("**8888888*88******88**88*8888888*8*88**8z");
-      console.log(res.data.id);
+
       return res.data.id;
     } catch (e) {
       console.error(e);
@@ -256,7 +256,7 @@ class SpotifyApi {
       );
 
       console.log("**8888888*88******88**88*8888888*8*88**8z");
-      console.log(res);
+
       return res;
     } catch (e) {
       console.error(e);

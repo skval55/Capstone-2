@@ -6,8 +6,12 @@ const CreatePlaylistForm = ({
   createPlaylist,
   currSongs,
   setSelectedSongs,
+  playlistCreated,
+  setPlaylistCreated,
 }) => {
   const [showActive, setShowActive] = useState(false);
+  const [playlistName, setPlaylistName] = useState(null);
+  const [playlistSongs, setPlaylistSongs] = useState(new Set());
   const INITIAL_STATE = {
     name: "",
     description: "",
@@ -25,11 +29,18 @@ const CreatePlaylistForm = ({
     setActiveClick(showActive ? () => openModal : null);
   }, [selectedSongs, showActive]);
 
-  const openModal = () => document.getElementById("my_modal_3").showModal();
+  const openModal = () => {
+    document.getElementById("my_modal_3").showModal();
+    setPlaylistSongs(new Set());
+    setPlaylistCreated(false);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     createPlaylist(formData);
+    setPlaylistName(formData.name);
+    setPlaylistSongs(new Set(selectedSongs));
+    setSelectedSongs(new Set());
     setFormData(INITIAL_STATE);
   };
 
@@ -39,6 +50,74 @@ const CreatePlaylistForm = ({
       ...formData,
       [id]: value,
     }));
+  };
+
+  const successDisplay = () => {
+    return (
+      <div>
+        <h3 className="text-xl font-bold m-3">Playlist Created</h3>
+        <h3 className="text-xl font-bold m-3 capitalize">{playlistName}</h3>
+        <div className="collapse bg-base-200">
+          <input type="checkbox" />
+          <div className="collapse-title text-xl font-medium">Songs</div>
+          <div className="collapse-content overflow-y-scroll overflow-x-hidden ">
+            <FormSongList
+              playlistSongs={playlistSongs}
+              selectedSongs={selectedSongs}
+              currSongs={currSongs}
+              setSelectedSongs={setSelectedSongs}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const createDisplay = () => {
+    return (
+      <div>
+        <h3 className="text-xl font-bold m-3">Create Playlist</h3>
+        <form
+          className="form-control flex flex-col gap-2"
+          onSubmit={handleSubmit}
+        >
+          <label>
+            <input
+              className="input input-bordered w-full "
+              placeholder="Playlist Name"
+              id="name"
+              type="text"
+              value={formData.name}
+              onChange={handleChange}
+            />
+          </label>
+
+          <textarea
+            className="textarea w-full h-20 textarea-bordered"
+            placeholder="Playlist Description"
+            id="description"
+            type="text"
+            value={formData.description}
+            onChange={handleChange}
+          ></textarea>
+
+          <div className="collapse bg-base-200">
+            <input type="checkbox" />
+            <div className="collapse-title text-xl font-medium">Songs</div>
+            <div className="collapse-content overflow-y-scroll overflow-x-hidden ">
+              <FormSongList
+                playlistSongs={playlistSongs}
+                selectedSongs={selectedSongs}
+                currSongs={currSongs}
+                setSelectedSongs={setSelectedSongs}
+              />
+            </div>
+          </div>
+
+          <button className="btn">Create Playlist</button>
+        </form>
+      </div>
+    );
   };
 
   return (
@@ -55,7 +134,8 @@ const CreatePlaylistForm = ({
             </button>
           </form>
 
-          <h3 className="text-xl font-bold m-3">Create Playlist</h3>
+          {playlistCreated ? successDisplay() : createDisplay()}
+          {/* <h3 className="text-xl font-bold m-3">Create Playlist</h3>
           <form
             className="form-control flex flex-col gap-2"
             onSubmit={handleSubmit}
@@ -93,7 +173,7 @@ const CreatePlaylistForm = ({
             </div>
 
             <button className="btn">Create Playlist</button>
-          </form>
+          </form> */}
         </div>
       </dialog>
     </div>

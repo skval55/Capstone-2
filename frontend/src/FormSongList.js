@@ -1,15 +1,31 @@
 import React, { useState, useEffect } from "react";
 import FormSong from "./FormSong";
 
-const FormSongList = ({ currSongs, selectedSongs, setSelectedSongs }) => {
+const FormSongList = ({
+  playlistSongs,
+  currSongs,
+  selectedSongs,
+  setSelectedSongs,
+}) => {
   const [currSelectedSongs, setCurrSelectedSongs] = useState([]);
+  const [canDelete, setCanDelete] = useState(true);
 
   useEffect(() => {
-    let songArr = [];
-    for (let i = 0; i < currSongs.length; i++) {
-      if (selectedSongs.has(currSongs[i].id)) songArr.push(currSongs[i]);
+    if (playlistSongs.size > 0) {
+      let songArr = [];
+      for (let i = 0; i < currSongs.length; i++) {
+        if (playlistSongs.has(currSongs[i].id)) songArr.push(currSongs[i]);
+      }
+      setCurrSelectedSongs([...songArr]);
+      setCanDelete(false);
+    } else {
+      let songArr = [];
+      for (let i = 0; i < currSongs.length; i++) {
+        if (selectedSongs.has(currSongs[i].id)) songArr.push(currSongs[i]);
+      }
+      setCurrSelectedSongs([...songArr]);
+      setCanDelete(true);
     }
-    setCurrSelectedSongs([...songArr]);
   }, [selectedSongs]);
 
   const songs = () => {
@@ -25,6 +41,7 @@ const FormSongList = ({ currSongs, selectedSongs, setSelectedSongs }) => {
           img_url={song.img_url}
           setSelectedSongs={setSelectedSongs}
           selectedSongs={selectedSongs}
+          canDelete={canDelete}
         />
       );
     });

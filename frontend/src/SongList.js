@@ -3,20 +3,27 @@ import Songs from "./Song";
 import CreatePlaylistForm from "./CreatePlaylistForm";
 import BackendApi from "./backendApi";
 
-const SongList = ({ currSongs }) => {
+const SongList = ({ currSongs, loadingSongs, setLoadingSongs }) => {
   const backendApi = new BackendApi();
   const [selectedSongs, setSelectedSongs] = useState(new Set());
   const [playinSong, setPlayingSong] = useState(null);
+  const [playlistCreated, setPlaylistCreated] = useState(false);
   console.log(selectedSongs);
   useEffect(() => {
-    console.log("selectedSongs from songlist", selectedSongs);
-  }, [selectedSongs]);
-  const createPlaylist = (formData) => {
+    setLoadingSongs(false);
+    setSelectedSongs(new Set());
+  }, [currSongs]);
+  const createPlaylist = async (formData) => {
     console.log("name", formData.name, "description", formData.description);
     console.log("songs", selectedSongs);
-    backendApi.createPlaylist(formData.name, formData.description, [
-      ...selectedSongs,
-    ]);
+    const res = await backendApi.createPlaylist(
+      formData.name,
+      formData.description,
+      [...selectedSongs]
+    );
+    // console.log(res);
+    // return res;
+    if (res) setPlaylistCreated(true);
   };
 
   const songs = () => {
@@ -38,10 +45,32 @@ const SongList = ({ currSongs }) => {
       );
     });
   };
+
+  const loading = (
+    <div>
+      <p className="text-3xl text-zinc-500 font-[500] sm:text-4xl">
+        Loading Songs
+      </p>
+      <span className="loading loading-spinner loading-lg"></span>
+      <div className="h-64"></div>
+    </div>
+  );
+
+  const search = (
+    <div>
+      <p className="text-3xl text-zinc-500 font-[500] sm:text-4xl">
+        Search Songs
+      </p>
+      <p className="h-64 text-zinc-500">songs will appear here after Search</p>
+    </div>
+  );
+
   return (
     <div>
-      <ul className="menu bg-base-200 w-screen [&_li>*]:rounded-none px-0 ">
-        {currSongs.length > 0 ? (
+      <ul className="menu bg-base-200 w-screen pb-20 [&_li>*]:rounded-none px-0 ">
+        {loadingSongs ? (
+          loading
+        ) : currSongs.length > 0 ? (
           <div>
             <p className="text-3xl text-zinc-500 font-[500] sm:text-4xl">
               Choose Songs
@@ -65,6 +94,8 @@ const SongList = ({ currSongs }) => {
         createPlaylist={createPlaylist}
         currSongs={currSongs}
         setSelectedSongs={setSelectedSongs}
+        playlistCreated={playlistCreated}
+        setPlaylistCreated={setPlaylistCreated}
       />
     </div>
   );

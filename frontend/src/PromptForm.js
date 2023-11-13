@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import BackendApi from "./backendApi";
 
-const PromptForm = ({ setCurrSongs, currSongs, playlistsInDb }) => {
+const PromptForm = ({
+  setCurrSongs,
+  currSongs,
+  playlistsInDb,
+  setLoadingSongs,
+}) => {
   const backendApi = new BackendApi();
   const INITIAL_STATE = {
     prompt: "",
@@ -18,6 +23,7 @@ const PromptForm = ({ setCurrSongs, currSongs, playlistsInDb }) => {
       setIncompleteForm(true);
       return;
     } else setIncompleteForm(false);
+    setLoadingSongs(true);
 
     const res = await backendApi.searchSongs(
       formData.prompt,
@@ -42,31 +48,17 @@ const PromptForm = ({ setCurrSongs, currSongs, playlistsInDb }) => {
     }));
   };
 
-  const alert = (
-    <div className="alert alert-info">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        className="stroke-current shrink-0 w-6 h-6"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        ></path>
-      </svg>
-      <span>Cannot leave prompt input empty</span>
-    </div>
+  const alert2 = (
+    <p className="font-semibold text-red-800">
+      Cannot leave prompt input empty
+    </p>
   );
 
   return (
     <form className="w-screen" onSubmit={handleSubmit}>
-      {alert}
       <div className="form-control  mx-20 ">
         <select
-          className="select bg-black m-auto  max-w-xs"
+          className="select bg-black mb-5 m-auto  max-w-xs"
           onChange={handleChange}
           id="playlist_id"
           name="playlist_id"
@@ -81,8 +73,8 @@ const PromptForm = ({ setCurrSongs, currSongs, playlistsInDb }) => {
         </select>
         {/* <button className="btn">Go</button> */}
       </div>
-
-      <div className="form-control mx-10 my-5 md:w-4/5 md:mx-auto lg:w-2/3">
+      {incompleteForm ? alert2 : null}
+      <div className="form-control mx-10 mb-5 md:w-4/5 md:mx-auto lg:w-2/3">
         <div className="input-group ">
           <input
             type="text"

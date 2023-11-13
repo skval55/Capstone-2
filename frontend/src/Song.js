@@ -70,7 +70,7 @@ const Songs = ({
       </button>
       <div className="" onClick={() => handleClick()}>
         <li>
-          <div className={active ? "active" : null}>
+          <div className={selectedSongs.has(id) ? "active" : null}>
             <div className="w-14">
               <img src={img_url} alt={`${name} - ${artist}`} />
             </div>

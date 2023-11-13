@@ -1,32 +1,35 @@
 import React, { useEffect, useState } from "react";
+import albumCover from "./images/default_album_cover.jpg";
 // import SpotifyApi from "./Api";
 // import BackendApi from "./backendApi";
 
 const Playlists = ({ id, name, inDb, addPlaylistToDb }) => {
-  let btnClass = inDb
-    ? "btn btn-outline btn-primary btn-disabled"
-    : "btn btn-outline btn-primary ";
-
   return (
-    <li>
-      <button
-        className={btnClass}
-        onClick={() => {
-          addPlaylistToDb(id);
-        }}
-      >
-        {name}
+    <li className="flex flex-row my-1">
+      <img className="w-14 p-0 rounded-none" src={albumCover} />
+      <button className="w-[47vw] p-1 my-auto">
+        <p className="text-ellipsis">{name}</p>
       </button>
       {inDb ? (
-        <div>
-          Added
+        <div className="px-0 my-auto">
           <input
             type="checkbox"
-            defaultChecked
-            className="checkbox checkbox-primary "
+            checked
+            className="checkbox checkbox-primary  "
           />
         </div>
-      ) : null}
+      ) : (
+        <div className="px-0 my-auto">
+          <button
+            onClick={() => {
+              addPlaylistToDb(id);
+            }}
+            className=" px-1.5   text-lg  text-primary "
+          >
+            +
+          </button>
+        </div>
+      )}
     </li>
   );
 };

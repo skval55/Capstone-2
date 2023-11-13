@@ -18,6 +18,7 @@ const WelcomePage = () => {
   const [playlists, setPlaylists] = useState([]);
   const [playlistsInDb, setPlaylistsInDb] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingSongs, setLoadingSongs] = useState(false);
   const [currSongs, setCurrSongs] = useState([]);
   const spotifyApi = new SpotifyApi();
   const backendApi = new BackendApi();
@@ -48,8 +49,10 @@ const WelcomePage = () => {
           );
           const username = res.data.response.display_name;
           const user_id = res.data.response.id;
+          const user_img = res.data.response.images[0].url;
           localStorage.setItem("username", username);
           localStorage.setItem("user_id", user_id);
+          localStorage.setItem("user_img", user_img);
           setCurrUser(username);
         };
 
@@ -126,14 +129,20 @@ const WelcomePage = () => {
     <div className="bg-gradient-to-tr from-cyan-950 via-emerald-950 to-cyan-950">
       <div className="bg-zinc-900/50 ">
         <NavBar />
+
         <Directions />
         <Drawer playlists={playlists} addPlaylistToDb={addPlaylistToDb} />
         <PromptForm
           setCurrSongs={setCurrSongs}
           currSongs={currSongs}
           playlistsInDb={playlistsInDb}
+          setLoadingSongs={setLoadingSongs}
         />
-        <SongList currSongs={currSongs} />
+        <SongList
+          currSongs={currSongs}
+          loadingSongs={loadingSongs}
+          setLoadingSongs={setLoadingSongs}
+        />
       </div>
     </div>
   );

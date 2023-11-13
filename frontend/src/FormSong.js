@@ -15,6 +15,7 @@ const FormSong = ({
   mp3_url,
   setSelectedSongs,
   selectedSongs,
+  canDelete,
 }) => {
   const handleClick = () => {
     selectedSongs.delete(id);
@@ -26,9 +27,12 @@ const FormSong = ({
       <div className="">
         <li>
           <div>
-            <button onClick={() => handleClick}>
-              <FontAwesomeIcon icon="fa-solid fa-xmark" />
-            </button>
+            {canDelete ? (
+              <button onClick={() => handleClick}>
+                <FontAwesomeIcon icon="fa-solid fa-xmark" />
+              </button>
+            ) : null}
+
             <div className="w-12">
               <img src={img_url} alt={`${name} - ${artist}`} />
             </div>

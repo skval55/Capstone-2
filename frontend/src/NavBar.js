@@ -3,13 +3,20 @@ import logo from "./images/logo.png";
 const NavBar = () => {
   return (
     <div className="navbar bg-zinc-800 z-20 fixed">
-      <div className="flex-1">
-        <a className="btn btn-ghost ">
+      <div className="flex justify-between w-screen">
+        <div className="flex btn btn-ghost md:ml-5">
+          <img
+            className=" rounded-full h-10 w-10 "
+            src={localStorage.getItem("user_img")}
+            alt="profile picture"
+          />
+          <p className="hidden md:block">{localStorage.getItem("username")}</p>
+        </div>
+        <a className="btn btn-ghost justify-self-center hidden md:inline-flex">
           <img className=" h-10" src={logo} alt="logo" />
           GrooveGuru
         </a>
-      </div>
-      <div className="flex-none">
+
         <ul className="menu menu-horizontal px-1">
           <li>
             <label htmlFor="my-drawer" className="btn  btn-ghost drawer-button">
