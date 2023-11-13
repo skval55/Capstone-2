@@ -450,8 +450,21 @@ class Music {
     }
   }
 
-  async deleteSongFromUser() {}
-  async deleteSongFromPlaylist() {}
+  async deleteUser(username) {
+    try {
+      await db.query(
+        `DELETE FROM users
+        WHERE username = $1;
+        `,
+        [username]
+      );
+
+      return "success!";
+    } catch (error) {
+      console.error("Error updating data:", error);
+    }
+  }
+  // async deleteSongFromPlaylist() {}
 }
 
 const practiceRun = new Music();

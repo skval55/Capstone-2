@@ -86,4 +86,18 @@ router.post("/insert-db", async function (req, res, next) {
   }
 });
 
+router.delete("/delete-user/:username", async function (req, res, next) {
+  try {
+    const username = req.params.username;
+    console.log("username***********************************");
+    console.log(username);
+    // console.log(req.body);
+    console.log("username***********************************");
+    await practiceRun.deleteUser(username);
+    return res.json({ message: "user deleted" });
+  } catch (err) {
+    return next(err);
+  }
+});
+
 module.exports = router;

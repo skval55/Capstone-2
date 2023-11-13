@@ -2,6 +2,10 @@
 
 -- CREATE DATABASE music_search_test;
 
+DROP DATABASE music_search_test;
+CREATE DATABASE music_search_test;
+\connect music_search_test
+
 -- -- connect to db
 
 -- CREATE EXTENSION vector;
@@ -35,8 +39,8 @@ CREATE TABLE users (
 CREATE TABLE songs_to_users (
   song_id varchar,
   user_id integer,
-  FOREIGN KEY (song_id) REFERENCES songs (id),
-  FOREIGN KEY (user_id) REFERENCES users (id)
+  FOREIGN KEY (song_id) REFERENCES songs (id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 
@@ -46,15 +50,15 @@ CREATE TABLE playlists (
   user_id integer,
   name varchar,
   in_db boolean,
-  FOREIGN KEY (user_id) REFERENCES users (id)
+  FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 -- Create the 'songs_to_playlists' table
 CREATE TABLE songs_to_playlists (
   song_id varchar,
   playlist_id varchar ,
-  FOREIGN KEY (song_id) REFERENCES songs (id),
-  FOREIGN KEY (playlist_id) REFERENCES playlists (id)
+  FOREIGN KEY (song_id) REFERENCES songs (id) ON DELETE CASCADE,
+  FOREIGN KEY (playlist_id) REFERENCES playlists (id) ON DELETE CASCADE
 );
 
 ALTER TABLE songs_to_users

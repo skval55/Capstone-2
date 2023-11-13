@@ -95,5 +95,21 @@ class BackendApi {
     console.log("res from backendApi");
     return true;
   };
+
+  deleteUser = async (username) => {
+    try {
+      await axios.delete(
+        `http://localhost:3001/music/delete-user/${localStorage.getItem(
+          "username"
+        )}`,
+        {
+          username,
+        }
+      );
+      return true;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 }
 export default BackendApi;

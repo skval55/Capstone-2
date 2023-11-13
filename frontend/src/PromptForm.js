@@ -71,7 +71,6 @@ const PromptForm = ({
             <option value={playlist.id}>{playlist.name}</option>
           ))}
         </select>
-        {/* <button className="btn">Go</button> */}
       </div>
       {incompleteForm ? alert2 : null}
       <div className="form-control mx-10 mb-5 md:w-4/5 md:mx-auto lg:w-2/3">
