@@ -8,6 +8,8 @@ const CreatePlaylistForm = ({
   setSelectedSongs,
   playlistCreated,
   setPlaylistCreated,
+  loadingModal,
+  setLoadingModal,
 }) => {
   const [showActive, setShowActive] = useState(false);
   const [playlistName, setPlaylistName] = useState(null);
@@ -35,8 +37,17 @@ const CreatePlaylistForm = ({
     setPlaylistCreated(false);
   };
 
+  const [incompleteForm, setIncompleteForm] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (formData.name === "") {
+      setIncompleteForm(true);
+      return;
+    }
+    setIncompleteForm(false);
+    setLoadingModal(true);
+
     createPlaylist(formData);
     setPlaylistName(formData.name);
     setPlaylistSongs(new Set(selectedSongs));
@@ -73,6 +84,10 @@ const CreatePlaylistForm = ({
     );
   };
 
+  const alert2 = (
+    <p className="font-semibold text-red-800">Cannot leave name input empty</p>
+  );
+
   const createDisplay = () => {
     return (
       <div>
@@ -82,6 +97,7 @@ const CreatePlaylistForm = ({
           onSubmit={handleSubmit}
         >
           <label>
+            {incompleteForm ? alert2 : null}
             <input
               className="input input-bordered w-full "
               placeholder="Playlist Name"
@@ -120,6 +136,15 @@ const CreatePlaylistForm = ({
     );
   };
 
+  const loadingDisplay = () => {
+    return (
+      <div>
+        <h3 className="text-xl font-bold m-3">Creating Playlist</h3>
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    );
+  };
+
   return (
     <div className=" bg-gradient-to-t from-black btm-nav ">
       <button className={activeClass} onClick={activeClick}>
@@ -133,8 +158,12 @@ const CreatePlaylistForm = ({
               ✕
             </button>
           </form>
+          {loadingModal
+            ? loadingDisplay()
+            : playlistCreated
+            ? successDisplay()
+            : createDisplay()}
 
-          {playlistCreated ? successDisplay() : createDisplay()}
           {/* <h3 className="text-xl font-bold m-3">Create Playlist</h3>
           <form
             className="form-control flex flex-col gap-2"

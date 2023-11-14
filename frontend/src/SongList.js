@@ -2,17 +2,17 @@ import React, { useEffect, useState } from "react";
 import Songs from "./Song";
 import CreatePlaylistForm from "./CreatePlaylistForm";
 import BackendApi from "./backendApi";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const SongList = ({ currSongs, loadingSongs, setLoadingSongs }) => {
   const backendApi = new BackendApi();
   const [selectedSongs, setSelectedSongs] = useState(new Set());
   const [playinSong, setPlayingSong] = useState(null);
   const [playlistCreated, setPlaylistCreated] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [loadingModal, setLoadingModal] = useState(false);
   console.log(selectedSongs);
-  useEffect(() => {
-    setLoadingSongs(false);
-    setSelectedSongs(new Set());
-  }, [currSongs]);
+
   const createPlaylist = async (formData) => {
     console.log("name", formData.name, "description", formData.description);
     console.log("songs", selectedSongs);
@@ -23,7 +23,10 @@ const SongList = ({ currSongs, loadingSongs, setLoadingSongs }) => {
     );
     // console.log(res);
     // return res;
-    if (res) setPlaylistCreated(true);
+    if (res) {
+      setLoadingModal(false);
+      setPlaylistCreated(true);
+    }
   };
 
   const songs = () => {
@@ -44,6 +47,28 @@ const SongList = ({ currSongs, loadingSongs, setLoadingSongs }) => {
         />
       );
     });
+  };
+
+  const [items, setItems] = useState(songs().slice(0, 20));
+  const [dataLength, setDataLength] = useState(20);
+  useEffect(() => {
+    console.log("running useEffect in SongList component");
+    setLoadingSongs(false);
+    setSelectedSongs(new Set());
+    setItems(songs().slice(0, 20));
+    setDataLength(20);
+  }, [currSongs]);
+  const fetchData = () => {
+    if (dataLength >= songs().length) {
+      setHasMore(false);
+      return;
+    }
+    setTimeout(() => {
+      setItems(songs().slice(0, dataLength + 20));
+      console.log("datalength", dataLength);
+      setDataLength(dataLength + 20);
+      console.log("datalength", dataLength);
+    }, 1000);
   };
 
   const loading = (
@@ -75,7 +100,16 @@ const SongList = ({ currSongs, loadingSongs, setLoadingSongs }) => {
             <p className="text-3xl text-zinc-500 font-[500] sm:text-4xl">
               Choose Songs
             </p>
-            {songs()}
+            {/* {songs()} */}
+            <InfiniteScroll
+              dataLength={dataLength} //This is important field to render the next data
+              next={fetchData}
+              hasMore={hasMore}
+              loader={loading}
+              endMessage={<p style={{ textAlign: "center" }}></p>}
+            >
+              {songs().slice(0, dataLength)}
+            </InfiniteScroll>
           </div>
         ) : (
           <div>
@@ -96,6 +130,8 @@ const SongList = ({ currSongs, loadingSongs, setLoadingSongs }) => {
         setSelectedSongs={setSelectedSongs}
         playlistCreated={playlistCreated}
         setPlaylistCreated={setPlaylistCreated}
+        loadingModal={loadingModal}
+        setLoadingModal={setLoadingModal}
       />
     </div>
   );

@@ -31,6 +31,7 @@ const Songs = ({
   }, [playingSong]);
 
   const handleClick = () => {
+    console.log(id);
     changeClass();
 
     let set;
