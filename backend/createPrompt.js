@@ -1,28 +1,36 @@
 function createPrompt(song) {
   const promptObj = {};
-  if (song.details.acousticness > 0.8) promptObj.acoustic = "very";
-  else if (song.details.acousticness > 0.6) promptObj.acoustic = "pretty";
-  else if (song.details.acousticness > 0.4) promptObj.acoustic = "kinda";
-  else if (song.details.acousticness > 0.2) promptObj.acoustic = "not very";
-  else promptObj.acoustic = "not";
+  if (song.details.acousticness > 0.8) promptObj.acoustic = "very acoustic";
+  else if (song.details.acousticness > 0.6)
+    promptObj.acoustic = "pretty acoustic";
+  else if (song.details.acousticness > 0.4)
+    promptObj.acoustic = "kinda acoustic";
+  else if (song.details.acousticness > 0.2)
+    promptObj.acoustic = "not very acoustic";
+  else promptObj.acoustic = "not acoustic";
 
-  if (song.details.danceability > 0.8) promptObj.danceable = "very";
-  else if (song.details.danceability > 0.6) promptObj.danceable = "pretty";
-  else if (song.details.danceability > 0.4) promptObj.danceable = "kinda";
-  else if (song.details.danceability > 0.2) promptObj.danceable = "not very";
-  else promptObj.danceable = "not";
+  if (song.details.danceability > 0.8) promptObj.danceable = "very danceable";
+  else if (song.details.danceability > 0.6)
+    promptObj.danceable = "pretty danceable";
+  else if (song.details.danceability > 0.4)
+    promptObj.danceable = "kinda danceable";
+  else if (song.details.danceability > 0.2)
+    promptObj.danceable = "not very danceable";
+  else promptObj.danceable = "not danceable";
 
-  if (song.details.energy > 0.8) promptObj.energy = "very high";
-  else if (song.details.energy > 0.6) promptObj.energy = "high";
-  else if (song.details.energy > 0.4) promptObj.energy = "kinda high";
-  else if (song.details.energy > 0.2) promptObj.energy = "kinda low";
-  else promptObj.energy = "low";
+  if (song.details.energy > 0.8) promptObj.energy = "very high energy";
+  else if (song.details.energy > 0.6) promptObj.energy = "high energy";
+  else if (song.details.energy > 0.4) promptObj.energy = "kinda high energy";
+  else if (song.details.energy > 0.2) promptObj.energy = "kinda low energy";
+  else promptObj.energy = "low energy";
 
-  if (song.details.instrumentalness > 0.75) promptObj.instrumental = "only";
-  else if (song.details.instrumentalness > 0.5) promptObj.instrumental = "very";
+  if (song.details.instrumentalness > 0.75)
+    promptObj.instrumental = "only instrumental";
+  else if (song.details.instrumentalness > 0.5)
+    promptObj.instrumental = "very instrumental";
   else if (song.details.instrumentalness > 0.25)
-    promptObj.instrumental = "kinda";
-  else promptObj.instrumental = "not";
+    promptObj.instrumental = "kinda instrumental";
+  else promptObj.instrumental = "not instrumental";
 
   const pitchClass = {
     0: "C",
@@ -43,15 +51,15 @@ function createPrompt(song) {
   if ((song.details.mode = 1)) promptObj.majorOrMinor = "major";
   else promptObj.majorOrMinor = "minor";
 
-  if (song.details.popularity > 80) promptObj.popular = "very";
-  else if (song.details.popularity > 60) promptObj.popular = "pretty";
-  else if (song.details.popularity > 40) promptObj.popular = "kinda";
-  else if (song.details.popularity > 20) promptObj.popular = "not very";
-  else promptObj.popular = "not";
+  if (song.details.popularity > 80) promptObj.popular = "very popular";
+  else if (song.details.popularity > 60) promptObj.popular = "pretty popular";
+  else if (song.details.popularity > 40) promptObj.popular = "kinda popular";
+  else if (song.details.popularity > 20) promptObj.popular = "not very popular";
+  else promptObj.popular = "not popular";
 
-  if (song.details.tempo > 200) promptObj.tempo = "very very fast";
-  else if (song.details.tempo > 160) promptObj.tempo = "very fast";
-  else if (song.details.tempo > 120) promptObj.tempo = "fast";
+  if (song.details.tempo > 200) promptObj.tempo = " very fast";
+  else if (song.details.tempo > 160) promptObj.tempo = "fast";
+  else if (song.details.tempo > 120) promptObj.tempo = "kinda fast";
   else if (song.details.tempo > 100) promptObj.tempo = "moderate";
   else if (song.details.tempo > 80) promptObj.tempo = "not very fast";
   else if (song.details.tempo > 60) promptObj.tempo = "slow";
@@ -64,13 +72,25 @@ function createPrompt(song) {
   else if (song.details.valence > 0.2) promptObj.valence = "sad";
   else promptObj.valence = "very sad";
 
-  return `A ${song.details.genres.join(" ")} song. it is ${
-    promptObj.acoustic
-  } acoustic, ${promptObj.danceable} danceable, ${promptObj.energy} energy, ${
-    promptObj.instrumental
-  } instramental, ${promptObj.popular} popular, ${
-    promptObj.tempo
-  } song with a ${promptObj.valence} feel.`;
+  // return `A ${song.details.genres.join(" ")} song. it is ${
+  //   promptObj.acoustic
+  // } acoustic, ${promptObj.danceable} danceable, ${promptObj.energy} energy, ${
+  //   promptObj.instrumental
+  // } instramental, ${promptObj.popular} popular, ${
+  //   promptObj.tempo
+  // } song with a ${promptObj.valence} feel.`;
+
+  return `Describe a song with the following characteristics:
+  - Genres: ${song.details.genres.join(", ")}
+  - Acousticness: ${promptObj.acoustic}
+  - Danceability: ${promptObj.danceable}
+  - Energy: ${promptObj.energy}
+  - Instrumentalness: ${promptObj.instrumental}
+  - Popularity: ${promptObj.popular}
+  - Tempo: ${promptObj.tempo}
+  - Valence: ${promptObj.valence}
+`;
+
   // return `A ${song.details.genres.join(" ")} song. it is ${
   //   promptObj.acoustic
   // } acoustic, ${promptObj.danceable} danceable, ${promptObj.energy} energy, ${

@@ -41,13 +41,15 @@ class BackendApi {
     }
   };
   updateUser = async (token) => {
+    console.log("before ", token);
     await this.getRefreshToken();
+    console.log("after", token);
     try {
       const res = await axios.put("http://localhost:3001/spotify/update-user", {
         token,
       });
-      console.log("username", res.data.responseFromDb);
-      localStorage.setItem("username", res.data.responseFromDb);
+      console.log("updateUser username", res.data.responseFromDb);
+      // localStorage.setItem("username", res.data.responseFromDb);
     } catch (error) {
       console.error(error);
     }

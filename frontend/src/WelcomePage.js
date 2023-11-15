@@ -33,12 +33,7 @@ const WelcomePage = () => {
         console.log("first use effect");
 
         try {
-          const res = await spotifyApi.accessToken(searchParams.get("code"));
-
-          if (res) {
-            // Set a flag in local storage to indicate that the request has been made
-            localStorage.setItem("access_token_requested", "true");
-          }
+          await spotifyApi.accessToken(searchParams.get("code"));
         } catch (error) {
           console.error(error);
         }
@@ -47,9 +42,14 @@ const WelcomePage = () => {
           const res = await backendApi.getCurruser(
             localStorage.getItem("access_token")
           );
+
           const username = res.data.response.display_name;
           const user_id = res.data.response.id;
-          const user_img = res.data.response.images[0].url;
+          const user_img =
+            res.data.response.images.length > 0
+              ? res.data.response.images[0].url
+              : "https://i.scdn.co/image/ab6761610000e5eb601fb0059594d52f3f7939a9";
+
           localStorage.setItem("username", username);
           localStorage.setItem("user_id", user_id);
           localStorage.setItem("user_img", user_img);
@@ -80,13 +80,14 @@ const WelcomePage = () => {
       const res = await backendApi.updateUser(
         localStorage.getItem("access_token")
       );
-      console.log(res);
+      console.log("res from update user", res);
     };
     const getPlaylists = async () => {
       const res = await backendApi.userPlaylists(
         localStorage.getItem("username")
       );
-
+      console.log("username in getPlaylist", localStorage.getItem("username"));
+      console.log("res from get playlist", res);
       return res.data.response;
     };
     const updateAll = async () => {
@@ -97,6 +98,7 @@ const WelcomePage = () => {
           await updateDatabase();
         }
         const playlistsResponse = await getPlaylists(currUser);
+        console.log("playlistResponse", playlistsResponse);
         setPlaylists(playlistsResponse); // Set playlists after the response is received
         setPlaylistsInDb(
           playlistsResponse.filter((playlist) => playlist.in_db === true)

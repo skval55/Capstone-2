@@ -26,16 +26,16 @@ const Footer = () => {
         <header className="footer-title mt-4 ">Connect</header>
         <div className="flex justify-around w-screen md:w-full">
           {/* grid grid-flow-col gap-4 */}
-          <a>
+          <a href="https://github.com/skval55/Capstone-2">
             <FontAwesomeIcon className="text-2xl" icon="fa-brands fa-github" />
           </a>
-          <a>
+          <a href="https://www.linkedin.com/in/samval55/">
             <FontAwesomeIcon
               className="text-2xl"
               icon="fa-brands fa-linkedin"
             />
           </a>
-          <a>
+          <a href="https://open.spotify.com/user/skvaladez?si=e23185d6aafc4adc">
             <FontAwesomeIcon className="text-2xl" icon="fa-brands fa-spotify" />
           </a>
         </div>

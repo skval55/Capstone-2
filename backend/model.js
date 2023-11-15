@@ -1,21 +1,6 @@
 const { Client } = require("pg");
 require("dotenv").config();
-// const { OpenAI } = require("langchain/llms/openai");
-// const { PGVectorStore } = require("langchain/vectorstores/pgvector");
-// if (process.env.NODE_ENV === "production") {
-//     db = new Client({
-//       connectionString: getDatabaseUri(),
-//       ssl: {
-//         rejectUnauthorized: false
-//       }
-//     });
-//   } else {
-//     db = new Client({
-//       connectionString: getDatabaseUri()
-//     });
-//   }
 
-//   db.connect();
 const openaiKey = process.env.OPENAI_API_KEY;
 
 db = new Client({
@@ -36,10 +21,6 @@ async function main(input) {
     input: input,
   });
 
-  //   console.log(embedding.data[0].embedding);
-  //   console.log(embedding.data[0]);
-  //   console.log(embedding.data);
-  //   console.log(embedding.data.length);
   return embedding.data;
 }
 
@@ -288,11 +269,16 @@ class Music {
       [user.display_name]
     );
     if (duplicateCheck.rows[0]) return user.display_name;
+
+    const img_url =
+      user.images.length > 0
+        ? user.images[1].url
+        : "https://i.scdn.co/image/ab6761610000e5eb601fb0059594d52f3f7939a9";
     try {
       const result = await db.query(
         `INSERT INTO users (username, img_url) VALUES ($1, $2) RETURNING username;
     `,
-        [user.display_name, user.images[1].url]
+        [user.display_name, img_url]
       );
       console.log(result);
       return user.display_name;

@@ -39,8 +39,7 @@ const CreatePlaylistForm = ({
 
   const [incompleteForm, setIncompleteForm] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleClick = async () => {
     if (formData.name === "") {
       setIncompleteForm(true);
       return;
@@ -53,6 +52,10 @@ const CreatePlaylistForm = ({
     setPlaylistSongs(new Set(selectedSongs));
     setSelectedSongs(new Set());
     setFormData(INITIAL_STATE);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
   };
 
   const handleChange = (e) => {
@@ -130,7 +133,9 @@ const CreatePlaylistForm = ({
             </div>
           </div>
 
-          <button className="btn">Create Playlist</button>
+          <button onClick={handleClick} className="btn">
+            Create Playlist
+          </button>
         </form>
       </div>
     );
@@ -141,6 +146,16 @@ const CreatePlaylistForm = ({
       <div>
         <h3 className="text-xl font-bold m-3">Creating Playlist</h3>
         <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    );
+  };
+  const noSongsDisplay = () => {
+    return (
+      <div>
+        <h3 className="text-xl font-bold m-3 capitalize">No songs selected</h3>
+        <p className="font-semibold ">
+          Exit here and select more songs to create playlist
+        </p>
       </div>
     );
   };
@@ -162,7 +177,9 @@ const CreatePlaylistForm = ({
             ? loadingDisplay()
             : playlistCreated
             ? successDisplay()
-            : createDisplay()}
+            : selectedSongs.size > 0
+            ? createDisplay()
+            : noSongsDisplay()}
 
           {/* <h3 className="text-xl font-bold m-3">Create Playlist</h3>
           <form

@@ -7,11 +7,14 @@ const PromptForm = ({
   playlistsInDb,
   setLoadingSongs,
 }) => {
+  const selector = document.getElementById("playlist_id");
   const backendApi = new BackendApi();
+
+  console.log("selector", selector);
   const INITIAL_STATE = {
     prompt: "",
     count: 5,
-    playlist_id: "all-songs",
+    playlist_id: selector ? selector.value : "all-songs",
   };
   const [formData, setFormData] = useState(INITIAL_STATE);
   const [incompleteForm, setIncompleteForm] = useState(false);
@@ -41,7 +44,10 @@ const PromptForm = ({
   };
 
   const handleChange = (e) => {
+    console.log("selector", selector);
     const { id, value } = e.target;
+    console.log(id, value);
+    console.log(formData);
     setFormData((formData) => ({
       ...formData,
       [id]: value,
@@ -63,7 +69,7 @@ const PromptForm = ({
           id="playlist_id"
           name="playlist_id"
         >
-          <option disabled selected>
+          <option value="all-songs" disabled selected>
             Choose a playlist to search
           </option>
           <option value="all-songs">all songs in GrooveGuru</option>

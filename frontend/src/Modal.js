@@ -19,23 +19,32 @@ const Modal = () => {
           connect on linkedin and github
         </h3>
         <div className="flex flex-col">
-          <button className="btn btn-ghost">
+          <a
+            href="https://www.linkedin.com/in/samval55/"
+            className="btn btn-ghost"
+          >
             <FontAwesomeIcon
               className="text-2xl"
               icon="fa-brands fa-linkedin"
             />
             linkedIn
-          </button>
+          </a>
 
-          <button className="btn btn-ghost">
+          <a
+            href="https://github.com/skval55/Capstone-2#readme"
+            className="btn btn-ghost"
+          >
             <FontAwesomeIcon className="text-2xl" icon="fa-brands fa-github" />
             readme
-          </button>
+          </a>
 
-          <button className="btn btn-ghost">
+          <a
+            href="https://github.com/skval55/Capstone-2"
+            className="btn btn-ghost"
+          >
             <FontAwesomeIcon className="text-2xl" icon="fa-brands fa-github" />
             source code
-          </button>
+          </a>
         </div>
       </div>
     </dialog>

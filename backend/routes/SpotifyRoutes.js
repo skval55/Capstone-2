@@ -4,14 +4,14 @@ const cors = require("cors");
 const SpotifyApi = require("../spotifyApi");
 const { Music, practiceRun } = require("../model");
 const { BadRequestError } = require("../expressError");
-const { checkToken } = require("../middleware");
+// const { checkToken } = require("../middleware");
 
 require("dotenv").config();
 
 const spotifyApi = new SpotifyApi();
 const dbConnection = new Music();
 
-router.get("/playlists", checkToken, async function (req, res, next) {
+router.get("/playlists", async function (req, res, next) {
   const token = req.headers.token;
 
   try {
@@ -23,7 +23,7 @@ router.get("/playlists", checkToken, async function (req, res, next) {
   }
 });
 
-router.get("/curr-user", checkToken, async function (req, res, next) {
+router.get("/curr-user", async function (req, res, next) {
   const token = req.headers.token;
 
   try {
@@ -45,7 +45,7 @@ router.get("/music-deets", async function (req, res, next) {
     return next(err);
   }
 });
-router.put("/update-db", checkToken, async function (req, res, next) {
+router.put("/update-db", async function (req, res, next) {
   console.log("db updating");
   const token = req.body.token;
   const username = req.body.username;
@@ -85,7 +85,7 @@ router.put("/update-user", async function (req, res, next) {
     return next(err);
   }
 });
-router.put("/update-playlists", checkToken, async function (req, res, next) {
+router.put("/update-playlists", async function (req, res, next) {
   const token = req.body.token;
   const username = req.body.username;
   console.log(token);
@@ -104,7 +104,7 @@ router.put("/update-playlists", checkToken, async function (req, res, next) {
   }
 });
 
-router.post("/add-playlist", checkToken, async function (req, res, next) {
+router.post("/add-playlist", async function (req, res, next) {
   const token = req.body.token;
   const id = req.body.id;
   const username = req.body.username;
@@ -123,7 +123,7 @@ router.post("/add-playlist", checkToken, async function (req, res, next) {
   }
 });
 
-router.post("/create-playlist", checkToken, async function (req, res, next) {
+router.post("/create-playlist", async function (req, res, next) {
   console.log("create playlist route hit!");
   const name = req.body.name;
   const description = req.body.description;

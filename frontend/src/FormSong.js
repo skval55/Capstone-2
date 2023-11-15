@@ -18,8 +18,9 @@ const FormSong = ({
   canDelete,
 }) => {
   const handleClick = () => {
-    selectedSongs.delete(id);
-    setSelectedSongs(new Set([...selectedSongs]));
+    let set = selectedSongs;
+    set.delete(id);
+    setSelectedSongs(new Set(set));
   };
 
   return (
@@ -28,7 +29,7 @@ const FormSong = ({
         <li>
           <div>
             {canDelete ? (
-              <button onClick={() => handleClick}>
+              <button onClick={handleClick}>
                 <FontAwesomeIcon icon="fa-solid fa-xmark" />
               </button>
             ) : null}
