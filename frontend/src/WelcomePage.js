@@ -3,7 +3,6 @@ import { useSearchParams } from "react-router-dom";
 import SpotifyApi from "./Api";
 import BackendApi from "./backendApi";
 import Playlists from "./Playlists";
-import { name } from "mustache";
 import PromptForm from "./PromptForm";
 import Songs from "./Song";
 import SongList from "./SongList";
