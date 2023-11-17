@@ -1,6 +1,9 @@
 import axios from "axios";
 
 class BackendApi {
+  constructor() {
+    this.BASE_URL = process.env.BACKEND_BASE_URL || "http://localhost:3000";
+  }
   async getRefreshToken() {
     if (Date.now() - localStorage.getItem("access_token_time") > 3540000) {
       const clientId = "2c63e202adfe49f5b8127478e0289baa";
