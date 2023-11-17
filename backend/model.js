@@ -3,11 +3,13 @@ require("dotenv").config();
 
 const openaiKey = process.env.OPENAI_API_KEY;
 
-db = new Client({
-  connectionString: `music_search_test`,
-});
+// db = new Client({
+//   connectionString: `music_search_test`,
+// });
 
-db.connect();
+const db = require("./db");
+
+// db.connect();
 
 const { OpenAI } = require("openai");
 

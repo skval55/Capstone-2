@@ -33,7 +33,7 @@ class SpotifyApi {
   }
   login() {
     const clientId = "2c63e202adfe49f5b8127478e0289baa";
-    const redirectUri = "http://localhost:3000/welcome";
+    const redirectUri = `${this.BASE_URL}/welcome`;
 
     let codeVerifier = generateRandomString(128);
 
@@ -61,7 +61,7 @@ class SpotifyApi {
   async accessToken(code) {
     const clientId = "2c63e202adfe49f5b8127478e0289baa";
     let codeVerifier = localStorage.getItem("code_verifier");
-    const redirectUri = "http://localhost:3000/welcome";
+    const redirectUri = `${this.BASE_URL}/welcome`;
     let body = new URLSearchParams({
       grant_type: "authorization_code",
       code: code,
