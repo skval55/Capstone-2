@@ -77,7 +77,7 @@ const SongList = ({ currSongs, loadingSongs, setLoadingSongs }) => {
         Loading Songs
       </p>
       <span className="loading loading-spinner loading-lg"></span>
-      <div className="h-64"></div>
+      <div className="h-80 bg-black"></div>
     </div>
   );
 
@@ -86,17 +86,17 @@ const SongList = ({ currSongs, loadingSongs, setLoadingSongs }) => {
       <p className="text-3xl text-zinc-500 font-[500] sm:text-4xl">
         Search Songs
       </p>
-      <p className="h-64 text-zinc-500">songs will appear here after Search</p>
+      <p className="h-80 text-zinc-500">songs will appear here after Search</p>
     </div>
   );
 
   return (
     <div>
-      <ul className="menu bg-base-200 w-screen pb-20 [&_li>*]:rounded-none px-0 ">
+      <ul className="menu bg-black min-h-[50vh] w-screen pb-20 [&_li>*]:rounded-none px-0 ">
         {loadingSongs ? (
           loading
         ) : currSongs.length > 0 ? (
-          <div>
+          <div className="bg-black">
             <p className="text-3xl text-zinc-500 font-[500] sm:text-4xl">
               Choose Songs
             </p>
@@ -112,14 +112,7 @@ const SongList = ({ currSongs, loadingSongs, setLoadingSongs }) => {
             </InfiniteScroll>
           </div>
         ) : (
-          <div>
-            <p className="text-3xl text-zinc-500 font-[500] sm:text-4xl">
-              Search Songs
-            </p>
-            <p className="h-64 text-zinc-500">
-              songs will appear here after Search
-            </p>
-          </div>
+          search
         )}
       </ul>
 

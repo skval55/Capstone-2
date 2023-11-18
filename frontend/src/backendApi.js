@@ -3,7 +3,7 @@ import axios from "axios";
 class BackendApi {
   constructor() {
     this.BASE_URL =
-      process.env.REACT_APP_BACKEND_URL || "http://localhost:3000";
+      process.env.REACT_APP_BACKEND_URL || "http://localhost:3001";
   }
   async getRefreshToken() {
     if (Date.now() - localStorage.getItem("access_token_time") > 3540000) {

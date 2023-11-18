@@ -36,7 +36,7 @@ const NavBar = () => {
   };
 
   return (
-    <div className="navbar bg-zinc-900 z-20 fixed">
+    <div className="navbar bg-black z-20 fixed">
       <div className="flex justify-between w-screen">
         <div className="dropdown dropdown-start">
           <label tabIndex={0} className="btn btn-ghost flex ">
@@ -52,7 +52,7 @@ const NavBar = () => {
           {modal()}
           <ul
             tabIndex={0}
-            className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+            className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-black rounded-box w-52"
           >
             <li>
               <Link className="" to={`/`}>
@@ -72,7 +72,7 @@ const NavBar = () => {
           </ul>
         </div>
 
-        <a className="btn btn-ghost justify-self-center hidden md:inline-flex">
+        <a className="btn btn-ghost justify-self-center hidden md:inline-flex bg-zinc-900">
           <img className=" h-10" src={logo} alt="logo" />
           GrooveGuru
         </a>
