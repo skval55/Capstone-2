@@ -34,7 +34,7 @@ class BackendApi {
   updateDb = async (token) => {
     await this.getRefreshToken();
     try {
-      await axios.put("http://localhost:3001/spotify/update-db", {
+      await axios.put(`${this.BASE_URL}/spotify/update-db`, {
         token,
         username: localStorage.getItem("username"),
       });
@@ -48,7 +48,7 @@ class BackendApi {
     await this.getRefreshToken();
     console.log("after", token);
     try {
-      const res = await axios.put("http://localhost:3001/spotify/update-user", {
+      const res = await axios.put(`${this.BASE_URL}/spotify/update-user`, {
         token,
       });
       console.log("updateUser username", res.data.responseFromDb);
@@ -59,7 +59,7 @@ class BackendApi {
   };
 
   searchSongs = async (prompt, count, playlist_id) => {
-    const res = await axios.post("http://localhost:3001/music/search", {
+    const res = await axios.post(`${this.BASE_URL}/music/search`, {
       prompt,
       username: localStorage.getItem("username"),
       count,
@@ -72,25 +72,23 @@ class BackendApi {
   };
 
   userPlaylists = async (username) => {
-    const res = await axios.get(
-      `http://localhost:3001/music/playlists/${username}`
-    );
+    const res = await axios.get(`${this.BASE_URL}/music/playlists/${username}`);
     return res;
   };
 
   getPlaylists = async (token) => {
     await this.getRefreshToken();
     console.log(token);
-    const res = await axios.put(
-      "http://localhost:3001/spotify/update-playlists",
-      { token, username: localStorage.getItem("username") }
-    );
+    const res = await axios.put(`${this.BASE_URL}/spotify/update-playlists`, {
+      token,
+      username: localStorage.getItem("username"),
+    });
     // console.log(res);
     return res;
   };
   getCurruser = async (token) => {
     await this.getRefreshToken();
-    const res = await axios.get("http://localhost:3001/spotify/curr-user", {
+    const res = await axios.get(`${this.BASE_URL}/spotify/curr-user`, {
       headers: { token },
     });
 
@@ -99,7 +97,7 @@ class BackendApi {
   getMusicDeets = async (token) => {
     await this.getRefreshToken();
     console.log(token);
-    const res = await axios.get("http://localhost:3001/spotify/music-deets", {
+    const res = await axios.get(`${this.BASE_URL}/spotify/music-deets`, {
       headers: { token },
     });
     console.log("res");
@@ -108,14 +106,14 @@ class BackendApi {
   };
   checkDbForCurrUser = async (username) => {
     const res = await axios.get(
-      `http://localhost:3001/music/check-curr-user/${username}`
+      `${this.BASE_URL}/music/check-curr-user/${username}`
     );
 
     return res;
   };
   addPlaylistToDb = async (id, token, username) => {
     await this.getRefreshToken();
-    const res = await axios.post("http://localhost:3001/spotify/add-playlist", {
+    const res = await axios.post(`${this.BASE_URL}/spotify/add-playlist`, {
       id,
       token,
       username,
@@ -124,7 +122,7 @@ class BackendApi {
   };
   createPlaylist = async (name, description, songs) => {
     await this.getRefreshToken();
-    await axios.post("http://localhost:3001/spotify/create-playlist", {
+    await axios.post(`${this.BASE_URL}/spotify/create-playlist`, {
       name,
       description,
       username: localStorage.getItem("username"),
@@ -138,7 +136,7 @@ class BackendApi {
   deleteUser = async (username) => {
     try {
       await axios.delete(
-        `http://localhost:3001/music/delete-user/${localStorage.getItem(
+        `${this.BASE_URL}/music/delete-user/${localStorage.getItem(
           "username"
         )}`,
         {
