@@ -34,7 +34,6 @@ class SpotifyApi {
   login() {
     const clientId = "2c63e202adfe49f5b8127478e0289baa";
     const redirectUri = `${this.BASE_URL}/welcome`;
-    console.log("redirectUri", redirectUri);
 
     let codeVerifier = generateRandomString(128);
 
