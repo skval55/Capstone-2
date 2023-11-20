@@ -1,0 +1,60 @@
+const db = require("../db");
+
+class User {
+  async checkIfUserExists(username) {
+    try {
+      const res = await db.query(
+        `SELECT id
+     FROM users
+     WHERE username = $1`,
+        [username]
+      );
+      const userExists = res.rows[0] ? true : false;
+      return userExists;
+    } catch (error) {}
+  }
+
+  async insertIntoUsers(user) {
+    console.log("user", user);
+    const duplicateCheck = await db.query(
+      `SELECT username
+       FROM users
+       WHERE username = $1`,
+      [user.display_name]
+    );
+    if (duplicateCheck.rows[0]) return user.display_name;
+
+    const img_url =
+      user.images.length > 0
+        ? user.images[1].url
+        : "https://i.scdn.co/image/ab6761610000e5eb601fb0059594d52f3f7939a9";
+    try {
+      const result = await db.query(
+        `INSERT INTO users (username, img_url) VALUES ($1, $2) RETURNING username;
+    `,
+        [user.display_name, img_url]
+      );
+      console.log(result);
+      return user.display_name;
+    } catch (error) {
+      console.error("Error inserting data:", error);
+    }
+  }
+
+  async deleteUser(username) {
+    try {
+      await db.query(
+        `DELETE FROM users
+        WHERE username = $1;
+        `,
+        [username]
+      );
+
+      return "success!";
+    } catch (error) {
+      console.error("Error updating data:", error);
+    }
+  }
+}
+
+module.exports = { User };

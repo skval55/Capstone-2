@@ -2,14 +2,17 @@ const express = require("express");
 const router = new express.Router();
 const cors = require("cors");
 const SpotifyApi = require("../spotifyApi");
-const { Music, practiceRun } = require("../model");
+const { Song } = require("../models/model");
+const { User } = require("../models/users");
+const { Playlist } = require("../models/playlists");
 const { BadRequestError } = require("../expressError");
-// const { checkToken } = require("../middleware");
 
 require("dotenv").config();
 
 const spotifyApi = new SpotifyApi();
-const dbConnection = new Music();
+const songs = new Song();
+const users = new User();
+const playlists = new Playlist();
 
 router.get("/playlists", async function (req, res, next) {
   const token = req.headers.token;
@@ -56,15 +59,15 @@ router.put("/update-db", async function (req, res, next) {
 
   try {
     const response = await spotifyApi.getTracksFeatures(token);
-    await dbConnection.insertManyIntoSongs(response);
-    const responseFromDb2 = await dbConnection.insertSongsToUsers(
+    await songs.insertManyIntoSongs(response);
+    const responseFromDb2 = await songs.insertSongsToUsers(
       response[0],
       username
     );
-    await dbConnection.insertStartPlaylist(username);
-    await dbConnection.insertSongsToPlaylists(response[0], username);
+    await songs.insertStartPlaylist(username);
+    await playlists.insertSongsToPlaylists(response[0], username);
     const responsePlaylists = await spotifyApi.getPlaylists(token);
-    await dbConnection.insertPLaylists(responsePlaylists, username);
+    await playlists.insertPLaylists(responsePlaylists, username);
     console.log("db updated");
     return res.json({ responseFromDb2 });
   } catch (err) {
@@ -78,7 +81,7 @@ router.put("/update-user", async function (req, res, next) {
 
   try {
     const response = await spotifyApi.getCurrUser(token);
-    const responseFromDb = await dbConnection.insertIntoUsers(response);
+    const responseFromDb = await users.insertIntoUsers(response);
     console.log("response from db", responseFromDb);
     return res.json({ responseFromDb });
   } catch (err) {
@@ -93,10 +96,7 @@ router.put("/update-playlists", async function (req, res, next) {
 
   try {
     const response = await spotifyApi.getPlaylists(token);
-    const responseFromDb = await dbConnection.insertPLaylists(
-      response,
-      username
-    );
+    const responseFromDb = await playlists.insertPLaylists(response, username);
     console.log("response from db", responseFromDb);
     return res.json({ responseFromDb });
   } catch (err) {
@@ -110,13 +110,13 @@ router.post("/add-playlist", async function (req, res, next) {
   const username = req.body.username;
   try {
     const response = await spotifyApi.getTracksFeatures(token, id);
-    await dbConnection.insertManyIntoSongs(response);
-    const responseFromDb2 = await dbConnection.insertSongsToUsers(
+    await songs.insertManyIntoSongs(response);
+    const responseFromDb2 = await songs.insertSongsToUsers(
       response[0],
       username
     );
-    await dbConnection.insertSongsToPlaylists(response[0], username);
-    await dbConnection.alterPlaylistStatus(id);
+    await playlists.insertSongsToPlaylists(response[0], username);
+    await playlists.alterPlaylistStatus(id);
     return res.json(responseFromDb2);
   } catch (err) {
     return next(err);

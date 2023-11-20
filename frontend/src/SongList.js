@@ -57,6 +57,7 @@ const SongList = ({ currSongs, loadingSongs, setLoadingSongs }) => {
     setSelectedSongs(new Set());
     setItems(songs().slice(0, 20));
     setDataLength(20);
+    if (songs().length > 20) setHasMore(true);
   }, [currSongs]);
   const fetchData = () => {
     if (dataLength >= songs().length) {

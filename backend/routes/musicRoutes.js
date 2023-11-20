@@ -1,16 +1,13 @@
-const { Music, practiceRun } = require("../model");
+const { Song } = require("../models/model");
+const { User } = require("../models/users");
+const { Playlist } = require("../models/playlists");
 const express = require("express");
 const router = new express.Router();
 const { BadRequestError } = require("../expressError");
 
-// router.get("/:id", async function (req, res, next) {
-//     try {
-//       const job = await Job.get(req.params.id);
-//       return res.json({ job });
-//     } catch (err) {
-//       return next(err);
-//     }
-//   });
+const songs = new Song();
+const users = new User();
+const playlists = new Playlist();
 
 /** POST /auth/token:  { username, password } => { token }
  *
@@ -26,17 +23,13 @@ router.post("/search", async function (req, res, next) {
     console.log("playlist id ***********************");
 
     if (playlist_id === "all-songs") {
-      const response = await practiceRun.searchSongsUserId(
-        prompt,
-        username,
-        count
-      );
+      const response = await songs.searchSongsUserId(prompt, username, count);
       console.log("from routes");
       console.log(response);
       return res.json({ response });
     } else {
       console.log("*********************seearched with playlist*********");
-      const response = await practiceRun.searchSongsWithPlaylistId(
+      const response = await songs.searchSongsWithPlaylistId(
         prompt,
         playlist_id,
         count
@@ -55,7 +48,7 @@ router.get("/playlists/:username", async function (req, res, next) {
     const username = req.params.username;
     console.log(username);
     console.log("username **********************************");
-    const response = await practiceRun.getUserPlaylists(username);
+    const response = await playlists.getUserPlaylists(username);
     return res.json({ response });
   } catch (err) {
     return next(err);
@@ -64,7 +57,7 @@ router.get("/playlists/:username", async function (req, res, next) {
 router.get("/check-curr-user/:username", async function (req, res, next) {
   try {
     const username = req.params.username;
-    const response = await practiceRun.checkIfUserExists(username);
+    const response = await users.checkIfUserExists(username);
     return res.json({ userExists: response });
   } catch (err) {
     return next(err);
@@ -77,7 +70,7 @@ router.post("/insert-db", async function (req, res, next) {
     console.log("userInfo***********************************");
     console.log(userInfo);
     console.log("userInfo***********************************");
-    await practiceRun.insertManyIntoSongs(musicInfo, prompts);
+    await songs.insertManyIntoSongs(musicInfo, prompts);
     console.log("from routes");
     console.log(response);
     return res.json({ message: "data inserted" });
@@ -89,11 +82,7 @@ router.post("/insert-db", async function (req, res, next) {
 router.delete("/delete-user/:username", async function (req, res, next) {
   try {
     const username = req.params.username;
-    console.log("username***********************************");
-    console.log(username);
-    // console.log(req.body);
-    console.log("username***********************************");
-    await practiceRun.deleteUser(username);
+    await users.deleteUser(username);
     return res.json({ message: "user deleted" });
   } catch (err) {
     return next(err);
