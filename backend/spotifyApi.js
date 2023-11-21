@@ -3,6 +3,7 @@ const createPrompt = require("./createPrompt");
 
 class SpotifyApi {
   async getPlaylists(token) {
+    console.log("getPlaylists hit hard!");
     let playlistsLength = 50;
     let offset = 0;
     let playlists = [];
@@ -16,11 +17,13 @@ class SpotifyApi {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(res);
+      // console.log(res);
       offset += 50;
       playlists = [...playlists, ...res.data.items];
       playlistsLength = res.data.items.length;
     }
+    console.log(playlists);
+    console.log("playlists");
     return playlists;
   }
   async getCurrUser(token) {
@@ -29,7 +32,7 @@ class SpotifyApi {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log("curr user", res.data);
+    // console.log("curr user", res.data);
     return res.data;
   }
 
@@ -78,10 +81,10 @@ class SpotifyApi {
         ids.add(tracks[i].track.id);
       }
     }
-    console.log(ids.size);
-    console.log("ids.size");
-    console.log("tracks length");
-    console.log(tracks.length);
+    // console.log(ids.size);
+    // console.log("ids.size");
+    // console.log("tracks length");
+    // console.log(tracks.length);
     const tracksId = [];
     const arrOfArtistIds = [];
     for (let i = 0; i < tracks.length; i++) {
@@ -132,8 +135,8 @@ class SpotifyApi {
       newArr = [...newArr, ...res.data.audio_features];
     }
     const [finalArr, promptArr] = this.mergeTrackInfo(newArr, tracks);
-    console.log("final arr", finalArr);
-    console.log("prompt arr", promptArr);
+    // console.log("final arr", finalArr);
+    // console.log("prompt arr", promptArr);
     return [finalArr, promptArr];
   }
   /**
@@ -210,8 +213,8 @@ class SpotifyApi {
   }
 
   async createPlaylist(name, description, username, token) {
-    console.log("spotify api hit!");
-    console.log(username);
+    // console.log("spotify api hit!");
+    // console.log(username);
     try {
       const res = await axios.post(
         `https://api.spotify.com/v1/users/${username}/playlists`,
@@ -228,7 +231,7 @@ class SpotifyApi {
         }
       );
 
-      console.log("**8888888*88******88**88*8888888*8*88**8z");
+      // console.log("**8888888*88******88**88*8888888*8*88**8z");
 
       return res.data.id;
     } catch (e) {
@@ -237,9 +240,9 @@ class SpotifyApi {
   }
 
   async addSongsToPlaylist(playlist_id, songs, token) {
-    console.log(songs);
+    // console.log(songs);
     const uris = songs.map((song) => `spotify:track:${song}`);
-    console.log(uris);
+    // console.log(uris);
     try {
       const res = await axios.post(
         `https://api.spotify.com/v1/playlists/${playlist_id}/tracks`,
@@ -254,8 +257,6 @@ class SpotifyApi {
           },
         }
       );
-
-      console.log("**8888888*88******88**88*8888888*8*88**8z");
 
       return res;
     } catch (e) {

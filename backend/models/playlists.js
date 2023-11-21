@@ -23,7 +23,8 @@ class Playlist {
       console.error(error);
     }
   }
-  async insertPLaylists(playlists, username) {
+  async insertPlaylists(playlists, username) {
+    console.log("we made it here my nigga", playlists);
     try {
       const userId = await db.query(
         `SELECT id
@@ -53,6 +54,26 @@ class Playlist {
       user_id = EXCLUDED.user_id, name = EXCLUDED.name;`;
       await db.query(query);
       return "success!";
+    } catch (error) {
+      console.error("Error inserting data:", error);
+    }
+  }
+
+  async insertStartPlaylist(username) {
+    try {
+      const userId = await db.query(
+        `SELECT id
+   FROM users
+   WHERE username = $1`,
+        [username]
+      );
+      await db.query(
+        `INSERT INTO playlists (id, user_id, name, in_db) VALUES
+      ($1, $2, $3, TRUE)
+      ON CONFLICT (id) DO UPDATE SET
+      user_id = EXCLUDED.user_id, name = EXCLUDED.name;`,
+        [userId.rows[0].id, userId.rows[0].id, `${username}s liked songs`]
+      );
     } catch (error) {
       console.error("Error inserting data:", error);
     }

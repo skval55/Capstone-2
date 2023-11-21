@@ -19,23 +19,18 @@ const playlists = new Playlist();
 router.post("/search", async function (req, res, next) {
   try {
     const { prompt, username, count, playlist_id } = req.body;
-    console.log(playlist_id);
-    console.log("playlist id ***********************");
 
     if (playlist_id === "all-songs") {
       const response = await songs.searchSongsUserId(prompt, username, count);
-      console.log("from routes");
-      console.log(response);
+
       return res.json({ response });
     } else {
-      console.log("*********************seearched with playlist*********");
       const response = await songs.searchSongsWithPlaylistId(
         prompt,
         playlist_id,
         count
       );
-      console.log("from routes");
-      console.log(response);
+
       return res.json({ response });
     }
   } catch (err) {
@@ -46,9 +41,9 @@ router.post("/search", async function (req, res, next) {
 router.get("/playlists/:username", async function (req, res, next) {
   try {
     const username = req.params.username;
-    console.log(username);
-    console.log("username **********************************");
+
     const response = await playlists.getUserPlaylists(username);
+    console.log("response from /playlists/:username", response);
     return res.json({ response });
   } catch (err) {
     return next(err);
@@ -67,12 +62,9 @@ router.get("/check-curr-user/:username", async function (req, res, next) {
 router.post("/insert-db", async function (req, res, next) {
   try {
     const { userInfo, musicInfo, prompts } = req.body;
-    console.log("userInfo***********************************");
-    console.log(userInfo);
-    console.log("userInfo***********************************");
+
     await songs.insertManyIntoSongs(musicInfo, prompts);
-    console.log("from routes");
-    console.log(response);
+
     return res.json({ message: "data inserted" });
   } catch (err) {
     return next(err);

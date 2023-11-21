@@ -15,7 +15,7 @@ class User {
   }
 
   async insertIntoUsers(user) {
-    console.log("user", user);
+    // console.log("user", user);
     const duplicateCheck = await db.query(
       `SELECT username
        FROM users
@@ -26,7 +26,7 @@ class User {
 
     const img_url =
       user.images.length > 0
-        ? user.images[1].url
+        ? user.images[0].url
         : "https://i.scdn.co/image/ab6761610000e5eb601fb0059594d52f3f7939a9";
     try {
       const result = await db.query(
@@ -34,7 +34,7 @@ class User {
     `,
         [user.display_name, img_url]
       );
-      console.log(result);
+      // console.log(result);
       return user.display_name;
     } catch (error) {
       console.error("Error inserting data:", error);
@@ -49,6 +49,8 @@ class User {
         `,
         [username]
       );
+
+      // console.log("USER DELETED FROM BACKEND");
 
       return "success!";
     } catch (error) {

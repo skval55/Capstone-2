@@ -29,9 +29,9 @@ class Song {
       [username]
     );
 
-    console.log("userId*******************");
+    // console.log("userId*******************");
     const userId = res.rows[0].id;
-    console.log(userId);
+    // console.log(userId);
     return userId;
   }
 
@@ -50,15 +50,15 @@ class Song {
           `;
 
       const res = await db.query(query);
-      console.log(res.rows);
+      // console.log(res.rows);
       return res.rows;
     } catch (error) {
       console.error("Error searching songs:", error);
     }
   }
   async searchSongsUserId(input, username, count) {
-    console.log(count);
-    console.log("count****************");
+    // console.log(count);
+    // console.log("count****************");
     try {
       const userId = await this.getUserId(username);
       const embedding = await main(input);
@@ -78,9 +78,9 @@ class Song {
         [userId]
       );
 
-      console.log(query.rows);
-      console.log(count);
-      console.log("count****************");
+      // console.log(query.rows);
+      // console.log(count);
+      // console.log("count****************");
       return query.rows;
     } catch (error) {
       console.error("Error searching songs:", error);
@@ -107,9 +107,9 @@ class Song {
         [playlist_id]
       );
 
-      console.log(query.rows);
-      console.log(count);
-      console.log("count****************");
+      // console.log(query.rows);
+      // console.log(count);
+      // console.log("count****************");
       return query.rows;
     } catch (error) {
       console.error("Error searching songs:", error);
@@ -129,16 +129,16 @@ class Song {
       const selectQuery = "SELECT * FROM songs";
       const res = await db.query(selectQuery);
 
-      console.log(res.rows);
+      // console.log(res.rows);
     } catch (error) {
       console.error("Error inserting data:", error);
     }
   }
   async insertManyIntoSongs([songs, prompts]) {
-    console.log(songs);
-    console.log("songs");
-    console.log(prompts);
-    console.log("prompts");
+    // console.log(songs);
+    // console.log("songs");
+    // console.log(prompts);
+    // console.log("prompts");
     const values = [];
     const embeddings = await main(prompts);
 
@@ -146,7 +146,7 @@ class Song {
       songs[i].songName = songs[i].songName.replaceAll("'", "''");
       songs[i].artist = songs[i].artist.replaceAll("'", "''");
       songs[i].album = songs[i].album.replaceAll("'", "''");
-      console.log(songs[i].songName);
+      // console.log(songs[i].songName);
 
       const val = `('${songs[i].id}', '[${embeddings[
         i
@@ -166,7 +166,7 @@ class Song {
       }
       return string;
     };
-    console.log(loopVals());
+    // console.log(loopVals());
     try {
       const query = `INSERT INTO songs (id, embedding, title, artist, album, img_url, mp3_url) VALUES
       ${loopVals()}
@@ -177,8 +177,9 @@ class Song {
 
       const selectQuery = "SELECT * FROM songs";
       const res = await db.query(selectQuery);
+      await db.query(selectQuery);
 
-      console.log(res.rows);
+      // console.log(res.rows);
     } catch (error) {
       console.error("Error inserting data:", error);
     }
@@ -192,7 +193,7 @@ class Song {
        WHERE username = $1`,
         [username]
       );
-      console.log("userid", userId.rows[0].id);
+      // console.log("userid", userId.rows[0].id);
       const values = [];
       for (let i = 0; i < arrOfSongs.length; i++) {
         const val = `('${arrOfSongs[i].id}', '${userId.rows[0].id}')`;

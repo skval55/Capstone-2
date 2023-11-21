@@ -2,9 +2,9 @@
 
 -- CREATE DATABASE music_search_test;
 
-DROP DATABASE music_search_test;
-CREATE DATABASE music_search_test;
-\connect music_search_test
+-- DROP DATABASE music_search_test;
+-- CREATE DATABASE music_search_test;
+-- \connect music_search_test
 
 -- -- connect to db
 
