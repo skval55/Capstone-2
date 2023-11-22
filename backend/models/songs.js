@@ -1,5 +1,6 @@
 const { Client } = require("pg");
 require("dotenv").config();
+const { BadRequestError, NotFoundError } = require("../expressError");
 
 const openaiKey = process.env.OPENAI_API_KEY;
 
@@ -32,35 +33,15 @@ class Song {
     // console.log("userId*******************");
     const userId = res.rows[0].id;
     // console.log(userId);
+
+    if (!userId) throw new NotFoundError(`no user with username: ${username}`);
     return userId;
   }
 
-  async searchSongs(input) {
-    try {
-      const embedding = await main(input);
-
-      // Assuming the embedding is stored as an array in the database
-      const embeddingString = JSON.stringify(embedding[0].embedding);
-
-      const query = `
-            SELECT id
-            FROM songs3
-            ORDER BY 1 - (embedding <=> '[${embedding[0].embedding.toString()}]') DESC
-            LIMIT 5;
-          `;
-
-      const res = await db.query(query);
-      // console.log(res.rows);
-      return res.rows;
-    } catch (error) {
-      console.error("Error searching songs:", error);
-    }
-  }
   async searchSongsUserId(input, username, count) {
-    // console.log(count);
-    // console.log("count****************");
     try {
       const userId = await this.getUserId(username);
+
       const embedding = await main(input);
 
       // Assuming the embedding is stored as an array in the database
@@ -78,9 +59,6 @@ class Song {
         [userId]
       );
 
-      // console.log(query.rows);
-      // console.log(count);
-      // console.log("count****************");
       return query.rows;
     } catch (error) {
       console.error("Error searching songs:", error);
@@ -107,38 +85,13 @@ class Song {
         [playlist_id]
       );
 
-      // console.log(query.rows);
-      // console.log(count);
-      // console.log("count****************");
       return query.rows;
     } catch (error) {
       console.error("Error searching songs:", error);
     }
   }
 
-  async insert(id, username, input) {
-    try {
-      const embedding = await main(input);
-      const query = {
-        text: "INSERT INTO songs (id, username, embedding) VALUES ($1, $2, $3)",
-        values: [id, username, `[${embedding[0].embedding.toString()}]`],
-      };
-
-      await db.query(query);
-
-      const selectQuery = "SELECT * FROM songs";
-      const res = await db.query(selectQuery);
-
-      // console.log(res.rows);
-    } catch (error) {
-      console.error("Error inserting data:", error);
-    }
-  }
   async insertManyIntoSongs([songs, prompts]) {
-    // console.log(songs);
-    // console.log("songs");
-    // console.log(prompts);
-    // console.log("prompts");
     const values = [];
     const embeddings = await main(prompts);
 

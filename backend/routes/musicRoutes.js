@@ -1,4 +1,4 @@
-const { Song } = require("../models/model");
+const { Song } = require("../models/songs");
 const { User } = require("../models/users");
 const { Playlist } = require("../models/playlists");
 const express = require("express");

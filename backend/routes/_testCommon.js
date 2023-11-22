@@ -1,5 +1,5 @@
 const { User } = require("../models/users");
-const { Song } = require("./songs");
+const { Song } = require("../models/songs");
 const { Playlist } = require("../models/playlists");
 const db = require("../db");
 

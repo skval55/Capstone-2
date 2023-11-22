@@ -24,7 +24,6 @@ class Playlist {
     }
   }
   async insertPlaylists(playlists, username) {
-    console.log("we made it here my nigga", playlists);
     try {
       const userId = await db.query(
         `SELECT id

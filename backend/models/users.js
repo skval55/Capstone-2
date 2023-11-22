@@ -1,4 +1,5 @@
 const db = require("../db");
+const { BadRequestError, NotFoundError } = require("../expressError");
 
 class User {
   async checkIfUserExists(username) {
@@ -22,7 +23,9 @@ class User {
        WHERE username = $1`,
       [user.display_name]
     );
-    if (duplicateCheck.rows[0]) return user.display_name;
+    // if (duplicateCheck.rows[0]) return user.display_name;
+    if (duplicateCheck.rows[0])
+      throw new BadRequestError(`Duplicate user ${user.display_name}`);
 
     const img_url =
       user.images.length > 0
@@ -42,20 +45,15 @@ class User {
   }
 
   async deleteUser(username) {
-    try {
-      await db.query(
-        `DELETE FROM users
-        WHERE username = $1;
+    const result = await db.query(
+      `DELETE FROM users
+        WHERE username = $1 RETURNING username
         `,
-        [username]
-      );
-
-      // console.log("USER DELETED FROM BACKEND");
-
-      return "success!";
-    } catch (error) {
-      console.error("Error updating data:", error);
-    }
+      [username]
+    );
+    const user = result.rows[0];
+    if (!user) throw new NotFoundError(`No user: ${username}`);
+    return "success!";
   }
 }
 
