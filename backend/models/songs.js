@@ -34,13 +34,15 @@ class Song {
     const userId = res.rows[0].id;
     // console.log(userId);
 
-    if (!userId) throw new NotFoundError(`no user with username: ${username}`);
     return userId;
   }
 
   async searchSongsUserId(input, username, count) {
     try {
       const userId = await this.getUserId(username);
+
+      if (!userId)
+        throw new NotFoundError(`no user with username: ${username}`);
 
       const embedding = await main(input);
 

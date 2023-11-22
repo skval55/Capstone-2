@@ -1,6 +1,13 @@
 const db = require("../db");
 
 class Playlist {
+  async getPlaylist(playlist_id) {
+    const res = await db.query(`SELECT name FROM playlists WHERE id = $1;`, [
+      playlist_id,
+    ]);
+    return res.rows;
+  }
+
   async getUserPlaylists(username) {
     console.log("username from playlists", username);
     try {
