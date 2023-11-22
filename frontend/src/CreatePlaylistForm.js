@@ -73,7 +73,9 @@ const CreatePlaylistForm = ({
         <h3 className="text-xl font-bold m-3 capitalize">{playlistName}</h3>
         <div className="collapse bg-base-200">
           <input type="checkbox" />
-          <div className="collapse-title text-xl font-medium">Songs</div>
+          <div className="collapse-title text-xl font-medium pr-3 pl-3">
+            Songs
+          </div>
           <div className="collapse-content overflow-y-scroll overflow-x-hidden ">
             <FormSongList
               playlistSongs={playlistSongs}
