@@ -30,29 +30,30 @@ class SpotifyApi {
     this.clientId = process.env.REACT_APP_CLIENT_ID;
   }
   login() {
-    const redirectUri = `${this.BASE_URL}/welcome`;
+    console.log(this.clientId);
+    // const redirectUri = `${this.BASE_URL}/welcome`;
 
-    let codeVerifier = generateRandomString(128);
+    // let codeVerifier = generateRandomString(128);
 
-    generateCodeChallenge(codeVerifier).then((codeChallenge) => {
-      let state = generateRandomString(16);
-      let scope =
-        " user-library-read playlist-modify-public playlist-modify-private";
+    // generateCodeChallenge(codeVerifier).then((codeChallenge) => {
+    //   let state = generateRandomString(16);
+    //   let scope =
+    //     " user-library-read playlist-modify-public playlist-modify-private";
 
-      localStorage.setItem("code_verifier", codeVerifier);
+    //   localStorage.setItem("code_verifier", codeVerifier);
 
-      let args = new URLSearchParams({
-        response_type: "code",
-        client_id: this.clientId,
-        scope: scope,
-        redirect_uri: redirectUri,
-        state: state,
-        code_challenge_method: "S256",
-        code_challenge: codeChallenge,
-      });
+    //   let args = new URLSearchParams({
+    //     response_type: "code",
+    //     client_id: this.clientId,
+    //     scope: scope,
+    //     redirect_uri: redirectUri,
+    //     state: state,
+    //     code_challenge_method: "S256",
+    //     code_challenge: codeChallenge,
+    //   });
 
-      window.location = "https://accounts.spotify.com/authorize?" + args;
-    });
+    //   window.location = "https://accounts.spotify.com/authorize?" + args;
+    // });
   }
 
   async accessToken(code) {
