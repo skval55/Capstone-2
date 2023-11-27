@@ -4,10 +4,10 @@ class BackendApi {
   constructor() {
     this.BASE_URL =
       process.env.REACT_APP_BACKEND_URL || "http://localhost:3001";
+    this.clientId = process.env.REACT_APP_CLIENT_ID;
   }
   async getRefreshToken() {
     if (Date.now() - localStorage.getItem("access_token_time") > 3540000) {
-      const clientId = "2c63e202adfe49f5b8127478e0289baa";
       // refresh token that has been previously stored
       const refreshToken = localStorage.getItem("refresh_token");
       const url = "https://accounts.spotify.com/api/token";
@@ -20,7 +20,7 @@ class BackendApi {
         body: new URLSearchParams({
           grant_type: "refresh_token",
           refresh_token: refreshToken,
-          client_id: clientId,
+          client_id: this.clientId,
         }),
       };
       const body = await fetch(url, payload);
