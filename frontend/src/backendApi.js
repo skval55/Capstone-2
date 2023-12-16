@@ -37,7 +37,7 @@ class BackendApi {
     try {
       await axios.put(`${this.BASE_URL}/spotify/update-db`, {
         token,
-        username: localStorage.getItem("username"),
+        username: localStorage.getItem("user_id"),
       });
       console.log("gottem");
     } catch (error) {
@@ -82,7 +82,7 @@ class BackendApi {
     console.log(token);
     const res = await axios.put(`${this.BASE_URL}/spotify/update-playlists`, {
       token,
-      username: localStorage.getItem("username"),
+      username: localStorage.getItem("user_id"),
     });
     // console.log(res);
     return res;
@@ -126,7 +126,7 @@ class BackendApi {
     await axios.post(`${this.BASE_URL}/spotify/create-playlist`, {
       name,
       description,
-      username: localStorage.getItem("username"),
+      username: localStorage.getItem("user_id"),
       songs,
       token: localStorage.getItem("access_token"),
     });
