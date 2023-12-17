@@ -8,7 +8,7 @@
 
 -- -- connect to db
 
--- CREATE EXTENSION vector;
+CREATE EXTENSION vector;
 
 DROP TABLE IF EXISTS songs_to_users CASCADE;
 DROP TABLE IF EXISTS songs CASCADE;
