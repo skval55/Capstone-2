@@ -1,4 +1,5 @@
 function generateRandomString(length) {
+  //generates random string
   let text = "";
   let possible =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
