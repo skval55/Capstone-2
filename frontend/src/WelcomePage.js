@@ -68,7 +68,6 @@ const WelcomePage = () => {
       console.log(res.data.userExists);
       return res.data.userExists;
     };
-
     const updateDatabase = async () => {
       console.log("updating");
       const res2 = await backendApi.updateDb2(
@@ -80,6 +79,7 @@ const WelcomePage = () => {
       console.log(res);
       console.log(res2);
     };
+
     const updateUser = async () => {
       const res = await backendApi.updateUser(
         localStorage.getItem("access_token")
