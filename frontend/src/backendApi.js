@@ -44,6 +44,18 @@ class BackendApi {
       console.error(error);
     }
   };
+  updateDb2 = async (token) => {
+    await this.getRefreshToken();
+    try {
+      await axios.put(`${this.BASE_URL}/spotify/update-db-2`, {
+        token,
+        username: localStorage.getItem("user_id"),
+      });
+      console.log("gottem");
+    } catch (error) {
+      console.error(error);
+    }
+  };
   updateUser = async (token) => {
     console.log("before ", token);
     await this.getRefreshToken();

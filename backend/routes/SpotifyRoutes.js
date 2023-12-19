@@ -62,19 +62,43 @@ router.put("/update-db", async function (req, res, next) {
       username
     );
 
-    await playlists.insertStartPlaylist(username);
-
-    const responsePlaylists = await spotifyApi.getPlaylists(token);
-
-    await playlists.insertPlaylists(responsePlaylists, username);
-
     await playlists.insertSongsToPlaylists(response[0], username);
 
     return res.json({ responseFromDb2 });
   } catch (err) {
     return next(err);
   }
+  //   const responseFromDb2 = await songs.insertSongsToUsers(
+  //     response[0],
+  //     username
+  //   );
+
+  //   await playlists.insertStartPlaylist(username);
+
+  //   const responsePlaylists = await spotifyApi.getPlaylists(token);
+
+  //   await playlists.insertPlaylists(responsePlaylists, username);
+
+  //   await playlists.insertSongsToPlaylists(response[0], username);
+
+  //   return res.json({ responseFromDb2 });
+  // } catch (err) {
+  //   return next(err);
+  // }
 });
+router.put("/update-db-2", async function (req, res, next) {
+  const token = req.body.token;
+  const username = req.body.username;
+  try {
+    await playlists.insertStartPlaylist(username);
+    const responsePlaylists = await spotifyApi.getPlaylists(token);
+    await playlists.insertPlaylists(responsePlaylists, username);
+    return res.json({ message: "success" });
+  } catch (err) {
+    return next(err);
+  }
+});
+
 router.put("/update-user", async function (req, res, next) {
   const token = req.body.token;
 

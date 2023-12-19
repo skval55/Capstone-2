@@ -70,10 +70,14 @@ const WelcomePage = () => {
     };
     const updateDatabase = async () => {
       console.log("updating");
+      const res2 = await backendApi.updateDb2(
+        localStorage.getItem("access_token")
+      );
       const res = await backendApi.updateDb(
         localStorage.getItem("access_token")
       );
       console.log(res);
+      console.log(res2);
     };
     const updateUser = async () => {
       const res = await backendApi.updateUser(
