@@ -68,6 +68,7 @@ const WelcomePage = () => {
       console.log(res.data.userExists);
       return res.data.userExists;
     };
+
     const updateDatabase = async () => {
       console.log("updating");
       const res2 = await backendApi.updateDb2(
