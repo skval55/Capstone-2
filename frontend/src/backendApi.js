@@ -35,6 +35,10 @@ class BackendApi {
   updateDb = async (token) => {
     await this.getRefreshToken();
     try {
+      await axios.put(`${this.BASE_URL}/spotify/get-track-features`, {
+        token,
+        username: localStorage.getItem("user_id"),
+      });
       await axios.put(`${this.BASE_URL}/spotify/update-db`, {
         token,
         username: localStorage.getItem("user_id"),

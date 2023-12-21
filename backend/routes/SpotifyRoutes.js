@@ -14,6 +14,8 @@ const songs = new Song();
 const users = new User();
 const playlists = new Playlist();
 
+let trackFeatures = [];
+
 router.get("/playlists", async function (req, res, next) {
   const token = req.headers.token;
 
@@ -48,21 +50,45 @@ router.get("/music-deets", async function (req, res, next) {
     return next(err);
   }
 });
-router.put("/update-db", async function (req, res, next) {
+
+router.put("/get-track-features", async function (req, res, next) {
   const token = req.body.token;
   const username = req.body.username;
 
   try {
     const response = await spotifyApi.getTracksFeatures(token);
 
-    await songs.insertManyIntoSongs(response);
+    trackFeatures = response;
+
+    // await songs.insertManyIntoSongs(response);
+
+    // const responseFromDb2 = await songs.insertSongsToUsers(
+    //   response[0],
+    //   username
+    // );
+
+    // await playlists.insertSongsToPlaylists(response[0], username);
+
+    return res.json({ message: "success" });
+  } catch (err) {
+    return next(err);
+  }
+});
+router.put("/update-db", async function (req, res, next) {
+  const token = req.body.token;
+  const username = req.body.username;
+
+  try {
+    // const response = await spotifyApi.getTracksFeatures(token);
+
+    await songs.insertManyIntoSongs(trackFeatures);
 
     const responseFromDb2 = await songs.insertSongsToUsers(
-      response[0],
+      trackFeatures[0],
       username
     );
 
-    await playlists.insertSongsToPlaylists(response[0], username);
+    await playlists.insertSongsToPlaylists(trackFeatures[0], username);
 
     return res.json({ responseFromDb2 });
   } catch (err) {
