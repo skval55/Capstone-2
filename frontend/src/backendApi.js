@@ -37,11 +37,11 @@ class BackendApi {
     try {
       await axios.put(`${this.BASE_URL}/spotify/get-track-features`, {
         token,
-        username: localStorage.getItem("user_id"),
+        username: localStorage.getItem("username"),
       });
       await axios.put(`${this.BASE_URL}/spotify/update-db`, {
         token,
-        username: localStorage.getItem("user_id"),
+        username: localStorage.getItem("username"),
       });
       console.log("gottem");
     } catch (error) {
@@ -53,7 +53,7 @@ class BackendApi {
     try {
       await axios.put(`${this.BASE_URL}/spotify/update-db-2`, {
         token,
-        username: localStorage.getItem("user_id"),
+        username: localStorage.getItem("username"),
       });
       console.log("gottem");
     } catch (error) {

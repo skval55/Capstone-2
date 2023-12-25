@@ -126,7 +126,7 @@ const WelcomePage = () => {
     await backendApi.addPlaylistToDb(
       id,
       localStorage.getItem("access_token"),
-      localStorage.getItem("user_id")
+      localStorage.getItem("username")
     );
     setLoading(false);
   };
