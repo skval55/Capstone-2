@@ -15,8 +15,6 @@ DROP TABLE IF EXISTS songs CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS playlists CASCADE;
 DROP TABLE IF EXISTS songs_to_playlists CASCADE;
--- DROP TABLE songs2;
--- DROP TABLE songs3;
 
 
 CREATE TABLE songs (
@@ -26,7 +24,8 @@ CREATE TABLE songs (
   artist varchar,
   album varchar,
   img_url varchar,
-  mp3_url varchar
+  mp3_url varchar,
+  spotify_url varchar
 );
 
 -- Create the 'users' table

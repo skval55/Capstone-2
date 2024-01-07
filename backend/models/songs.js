@@ -51,7 +51,7 @@ class Song {
 
       const query = await db.query(
         `
-      SELECT s.id, s.title, s.artist, s.album, s.img_url, s.mp3_url
+      SELECT s.id, s.title, s.artist, s.album, s.img_url, s.mp3_url, s.spotify_url
       FROM songs AS s
       LEFT JOIN songs_to_users AS su ON s.id = su.song_id AND su.user_id = $1
       WHERE su.user_id = $1
@@ -77,7 +77,7 @@ class Song {
 
       const query = await db.query(
         `
-    SELECT s.id, s.title, s.artist, s.album, s.img_url, s.mp3_url
+    SELECT s.id, s.title, s.artist, s.album, s.img_url, s.mp3_url, s.spotify_url
     FROM songs AS s
     LEFT JOIN songs_to_playlists AS sp ON s.id = sp.song_id AND sp.playlist_id = $1
     WHERE sp.playlist_id = $1
@@ -109,7 +109,7 @@ class Song {
         songs[i].artist
       }', '${songs[i].album}', '${songs[i].image_urls[1].url}', '${
         songs[i].mp3_url
-      }')`;
+      }', '${songs[i].url}' )`;
       values.push(val);
     }
     // console.log(values);
@@ -123,7 +123,7 @@ class Song {
     };
     // console.log(loopVals());
     try {
-      const query = `INSERT INTO songs (id, embedding, title, artist, album, img_url, mp3_url) VALUES
+      const query = `INSERT INTO songs (id, embedding, title, artist, album, img_url, mp3_url, spotify_url) VALUES
       ${loopVals()}
       ON CONFLICT (id) DO UPDATE SET
       embedding = EXCLUDED.embedding, title = EXCLUDED.title, artist = EXCLUDED.artist, album = EXCLUDED.album, img_url = EXCLUDED.img_url, mp3_url = EXCLUDED.mp3_url`;

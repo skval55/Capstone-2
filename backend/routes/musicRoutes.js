@@ -52,7 +52,7 @@ router.get("/playlists/:username", async function (req, res, next) {
     if (!userExists) return res.status(404).json({ message: "user not found" });
 
     const response = await playlists.getUserPlaylists(username);
-    console.log("response from /playlists/:username", response);
+    // console.log("response from /playlists/:username", response);
     return res.json({ response });
   } catch (err) {
     return next(err);

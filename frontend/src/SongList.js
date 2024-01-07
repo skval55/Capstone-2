@@ -40,6 +40,7 @@ const SongList = ({ currSongs, loadingSongs, setLoadingSongs }) => {
           album={song.album}
           mp3_url={song.mp3_url}
           img_url={song.img_url}
+          spotify_url={song.spotify_url}
           setSelectedSongs={setSelectedSongs}
           selectedSongs={selectedSongs}
           setPlayingSong={setPlayingSong}

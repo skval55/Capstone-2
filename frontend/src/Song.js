@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
+import spotifyLogo from "./spotify-icons-logos/logos/01_RGB/02_PNG/Spotify_Logo_RGB_Green.png";
+import spotifyLogoMini from "./spotify-icons-logos/icons/02_CMYK/02_PNG/Spotify_Icon_CMYK_White.png";
 
 library.add(fab, faPause, faPlay);
 
@@ -13,6 +15,7 @@ const Songs = ({
   album,
   img_url,
   mp3_url,
+  spotify_url,
   setSelectedSongs,
   selectedSongs,
   setPlayingSong,
@@ -78,12 +81,21 @@ const Songs = ({
             <audio ref={audioRef} className={playing ? "play" : null}>
               <source src={mp3_url} type="audio/mpeg" />
             </audio>
+            <div className="flex flex-row justify-between w-[60vw] font-semibold max-w-full md:w-[80vw] lg:w-[85vw] ">
+              <div className="flex flex-col ">
+                <a href={spotify_url} target="_blank" rel="noopener noreferrer">
+                  {" "}
+                  <p className="truncate text-lg  hover:underline">{name}</p>
+                </a>
+                <p>{artist}</p>
+              </div>
 
-            <div className="flex flex-col ">
-              <p className="truncate text-lg w-[60vw] font-semibold max-w-full md:w-[80vw] lg:w-[85vw]">
-                {name}
-              </p>
-              <p>{artist}</p>
+              {playing ? (
+                <div className="text-center ">
+                  playing with
+                  <img className="w-20 pt-1" src={spotifyLogo} />
+                </div>
+              ) : null}
             </div>
           </div>
         </li>

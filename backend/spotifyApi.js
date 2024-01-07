@@ -3,7 +3,7 @@ const createPrompt = require("./createPrompt");
 
 class SpotifyApi {
   async getPlaylists(token) {
-    console.log("getPlaylists hit hard!");
+    // console.log("getPlaylists hit hard!");
     let playlistsLength = 50;
     let offset = 0;
     let playlists = [];
@@ -22,8 +22,8 @@ class SpotifyApi {
       playlists = [...playlists, ...res.data.items];
       playlistsLength = res.data.items.length;
     }
-    console.log(playlists);
-    console.log("playlists");
+    // console.log(playlists);
+    // console.log("playlists");
     return playlists;
   }
   async getCurrUser(token) {
@@ -100,6 +100,7 @@ class SpotifyApi {
         popularity: tracks[i].track.popularity,
         mp3_url: tracks[i].track.preview_url,
         image_urls: tracks[i].track.album.images,
+        url: tracks[i].track.album.external_urls.spotify,
         playlist_id: id,
       };
     }
@@ -135,7 +136,7 @@ class SpotifyApi {
       newArr = [...newArr, ...res.data.audio_features];
     }
     const [finalArr, promptArr] = this.mergeTrackInfo(newArr, tracks);
-    // console.log("final arr", finalArr);
+    console.log("final arr", finalArr);
     // console.log("prompt arr", promptArr);
     return [finalArr, promptArr];
   }

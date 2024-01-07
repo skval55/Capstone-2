@@ -144,7 +144,7 @@ router.put("/update-playlists", async function (req, res, next) {
   try {
     const response = await spotifyApi.getPlaylists(token);
     const responseFromDb = await playlists.insertPlaylists(response, username);
-    console.log("response from db", responseFromDb);
+    // console.log("response from db", responseFromDb);
     return res.json({ responseFromDb });
   } catch (err) {
     return next(err);

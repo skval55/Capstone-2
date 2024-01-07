@@ -9,7 +9,7 @@ class Playlist {
   }
 
   async getUserPlaylists(username) {
-    console.log("username from playlists", username);
+    // console.log("username from playlists", username);
     try {
       const res = await db.query(
         `SELECT id
@@ -24,7 +24,7 @@ class Playlist {
         `SELECT id, name, in_db FROM playlists WHERE user_id = $1`,
         [userId]
       );
-      console.log("res from playlists", playlistsRes.rows);
+      // console.log("res from playlists", playlistsRes.rows);
       return playlistsRes.rows;
     } catch (error) {
       console.error(error);
@@ -38,7 +38,7 @@ class Playlist {
      WHERE username = $1`,
         [username]
       );
-      console.log("userid", userId.rows[0].id);
+      // console.log("userid", userId.rows[0].id);
       const values = [];
       for (let i = 0; i < playlists.length; i++) {
         const val = `('${playlists[i].id}', '${userId.rows[0].id}', '${playlists[i].name}', FALSE)`;
@@ -53,7 +53,7 @@ class Playlist {
         }
         return string;
       };
-      console.log("loopVals", loopVals());
+      // console.log("loopVals", loopVals());
       const query = `INSERT INTO playlists (id, user_id, name, in_db) VALUES
       ${loopVals()}
       ON CONFLICT (id) DO UPDATE SET
@@ -101,7 +101,7 @@ class Playlist {
         }')`;
         values.push(val);
       }
-      console.log(values);
+      // console.log(values);
 
       const loopVals = () => {
         let string = "";
