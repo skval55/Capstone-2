@@ -8,6 +8,11 @@ const { BadRequestError, NotFoundError } = require("../expressError");
 const songs = new Song();
 const users = new User();
 const playlists = new Playlist();
+const setHeaders = () => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+};
 
 /** POST /auth/token:  { username, password } => { token }
  *
@@ -17,6 +22,8 @@ const playlists = new Playlist();
  */
 
 router.post("/search", async function (req, res, next) {
+  setHeaders();
+
   try {
     const { prompt, username, count, playlist_id } = req.body;
 
@@ -44,6 +51,7 @@ router.post("/search", async function (req, res, next) {
 });
 
 router.get("/playlists/:username", async function (req, res, next) {
+  setHeaders();
   try {
     const username = req.params.username;
 
@@ -59,6 +67,7 @@ router.get("/playlists/:username", async function (req, res, next) {
   }
 });
 router.get("/check-curr-user/:username", async function (req, res, next) {
+  setHeaders();
   try {
     const username = req.params.username;
     const response = await users.checkIfUserExists(username);
@@ -81,6 +90,7 @@ router.get("/check-curr-user/:username", async function (req, res, next) {
 // });
 
 router.delete("/delete-user/:username", async function (req, res, next) {
+  setHeaders();
   try {
     const username = req.params.username;
     await users.deleteUser(username);
