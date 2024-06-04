@@ -11,7 +11,9 @@ const PORT = +process.env.PORT || 3001;
 
 // Use dev database, testing database, or via env var, production database
 function getDatabaseUri() {
-  return process.env.NODE_ENV === "test"
+  console.log("node.env");
+  console.log(process.env.NODE_ENV);
+  return process.env.NODE_ENV === "development"
     ? "music_search_test"
     : process.env.POSTGRES_URL || "music_search";
 }
