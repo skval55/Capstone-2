@@ -13,7 +13,7 @@ const spotifyApi = new SpotifyApi();
 const songs = new Song();
 const users = new User();
 const playlists = new Playlist();
-const setHeaders = () => {
+const setHeaders = (res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -22,7 +22,7 @@ const setHeaders = () => {
 let trackFeatures = [];
 
 router.get("/playlists", async function (req, res, next) {
-  setHeaders();
+  setHeaders(res);
   const token = req.headers.token;
 
   try {
@@ -35,7 +35,7 @@ router.get("/playlists", async function (req, res, next) {
 });
 
 router.get("/curr-user", async function (req, res, next) {
-  setHeaders();
+  setHeaders(res);
   const token = req.headers.token;
 
   try {
@@ -47,7 +47,7 @@ router.get("/curr-user", async function (req, res, next) {
   }
 });
 router.get("/music-deets", async function (req, res, next) {
-  setHeaders();
+  setHeaders(res);
   const token = req.headers.token;
 
   try {
@@ -60,7 +60,7 @@ router.get("/music-deets", async function (req, res, next) {
 });
 
 router.put("/get-track-features", async function (req, res, next) {
-  setHeaders();
+  setHeaders(res);
   const token = req.body.token;
   const username = req.body.username;
 
@@ -84,7 +84,7 @@ router.put("/get-track-features", async function (req, res, next) {
   }
 });
 router.put("/update-db", async function (req, res, next) {
-  setHeaders();
+  setHeaders(res);
   const token = req.body.token;
   const username = req.body.username;
 
@@ -123,7 +123,7 @@ router.put("/update-db", async function (req, res, next) {
   // }
 });
 router.put("/update-db-2", async function (req, res, next) {
-  setHeaders();
+  setHeaders(res);
   const token = req.body.token;
   const username = req.body.username;
   try {
@@ -137,7 +137,7 @@ router.put("/update-db-2", async function (req, res, next) {
 });
 
 router.put("/update-user", async function (req, res, next) {
-  setHeaders();
+  setHeaders(res);
   const token = req.body.token;
 
   try {
@@ -150,7 +150,7 @@ router.put("/update-user", async function (req, res, next) {
   }
 });
 router.put("/update-playlists", async function (req, res, next) {
-  setHeaders();
+  setHeaders(res);
   const token = req.body.token;
   const username = req.body.username;
 
@@ -165,7 +165,7 @@ router.put("/update-playlists", async function (req, res, next) {
 });
 
 router.post("/add-playlist", async function (req, res, next) {
-  setHeaders();
+  setHeaders(res);
   const token = req.body.token;
   const id = req.body.id;
   const username = req.body.username;
@@ -185,7 +185,7 @@ router.post("/add-playlist", async function (req, res, next) {
 });
 
 router.post("/create-playlist", async function (req, res, next) {
-  setHeaders();
+  setHeaders(res);
   const name = req.body.name;
   const description = req.body.description;
   const username = req.body.username;
