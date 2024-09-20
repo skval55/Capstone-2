@@ -2,7 +2,7 @@ const { Client } = require("pg");
 require("dotenv").config();
 const { BadRequestError, NotFoundError } = require("../expressError");
 
-const openaiKey = process.env.OPENAI_API_KEY;
+const openaiKey = process.env.OPENAI_API_KEY_GROOVEGURU;
 
 const db = require("../db");
 
