@@ -75,7 +75,7 @@ const Songs = ({
       <div className="" onClick={() => handleClick()}>
         <li>
           <div className={selectedSongs.has(id) ? "active" : null}>
-            <div className="w-14">
+            <div className="w-14 h-14 bg-gray-600">
               <img src={img_url} alt={`${name} - ${artist}`} />
             </div>
             <audio ref={audioRef} className={playing ? "play" : null}>

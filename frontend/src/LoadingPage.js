@@ -34,7 +34,8 @@ const LoadingPage = () => {
   }, []);
 
   return (
-    <div className="h-screen w-screen bg-cover bg-top bg-[url('./images/grooveGuruBackgroundImg2.jpg')]">
+    <div className="h-screen w-screen bg-cover bg-top -z-20 bg-[url('./images/grooveGuruBackgroundImg2low.jpg')]">
+    <div className="h-screen w-screen bg-cover bg-top -z-10 bg-[url('./images/grooveGuruBackgroundImg2.jpg')]">
       <div className="absolute h-screen w-screen  bg-zinc-900/50 flex flex-col justify-start ">
         <img className=" w-16 m-auto  mt-8 mb-0" src={logo} alt="logo" />
 
@@ -44,6 +45,7 @@ const LoadingPage = () => {
           <span className={fadeProp.fade}>{WORDS_TO_ANIMATE[wordOrder]}</span>
         </h1>
       </div>
+    </div>
     </div>
   );
 };

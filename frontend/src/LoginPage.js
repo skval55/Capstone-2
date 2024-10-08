@@ -18,7 +18,8 @@ const LoginPage = () => {
 
   return (
     <div>
-      <div className="h-screen w-screen bg-cover bg-top bg-[url('./images/grooveGuruBackgroundImg2.jpg')]">
+      <div className="h-screen w-screen bg-cover -z-20 bg-top bg-[url('./images/grooveGuruBackgroundImg2low.jpg')]">
+      <div className="h-screen w-screen bg-cover bg-top -z-10 bg-[url('./images/grooveGuruBackgroundImg2.jpg')]">
         <div className="absolute h-screen w-screen  bg-zinc-900/50  flex flex-col md:flex-row md:flex-wrap md:content-between md:justify-around">
           <Modal />
           <div className="flex md:w-screen md:h-20 justify-between m-4 ">
@@ -65,6 +66,7 @@ const LoginPage = () => {
             <p className="pb-4">Learn more about GrooveGuru.</p>
           </div>
         </div>
+      </div>
       </div>
       <Footer />
     </div>
