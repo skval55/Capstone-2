@@ -21,7 +21,7 @@ const PromptForm = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     // await login(formData);
-    console.log(formData);
+    console.log({formData});
     if (formData.prompt === "") {
       setIncompleteForm(true);
       return;
@@ -36,9 +36,9 @@ const PromptForm = ({
     console.log("frontend");
     console.log(res.data.response);
     const songs = res.data.response;
-    // changeCurrSongs(songs);
+    console.log({songs})
     setCurrSongs(songs);
-    console.log(currSongs);
+    console.log({currSongs});
 
     setFormData(INITIAL_STATE);
   };

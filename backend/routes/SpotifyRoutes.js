@@ -60,23 +60,26 @@ router.get("/music-deets", async function (req, res, next) {
 });
 
 router.put("/get-track-features", async function (req, res, next) {
+  console.log("get track fetures 1 ******************")
   setHeaders(res);
+  console.log("get track fetures 2 ******************")
   const token = req.body.token;
+  console.log("get track fetures 3 ******************")
   const username = req.body.username;
-
+console.log("get track fetures 4 ******************")
   try {
     const response = await spotifyApi.getTracksFeatures(token);
 
     trackFeatures = response;
 
-    // await songs.insertManyIntoSongs(response);
+    await songs.insertManyIntoSongs(response);
 
-    // const responseFromDb2 = await songs.insertSongsToUsers(
-    //   response[0],
-    //   username
-    // );
+    const responseFromDb2 = await songs.insertSongsToUsers(
+      response[0],
+      username
+    );
 
-    // await playlists.insertSongsToPlaylists(response[0], username);
+    await playlists.insertSongsToPlaylists(response[0], username);
 
     return res.json({ message: "success" });
   } catch (err) {

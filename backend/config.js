@@ -13,8 +13,11 @@ const PORT = +process.env.PORT || 3001;
 function getDatabaseUri() {
   console.log("node.env");
   console.log(process.env.NODE_ENV);
+  console.log(process.env.NODE_ENV === "development"
+    ? "postgresql://grooveguru_dzvm_user:qRe6NGXc93KKxLX5RJE7X5Ho6t5J4nuG@dpg-ctr43b0gph6c73ct9rug-a.oregon-postgres.render.com/grooveguru_dzvm?ssl=true"
+    : process.env.POSTGRES_URL || "music_search")
   return process.env.NODE_ENV === "development"
-    ? "music_search_test"
+    ? "postgresql://grooveguru_dzvm_user:qRe6NGXc93KKxLX5RJE7X5Ho6t5J4nuG@dpg-ctr43b0gph6c73ct9rug-a.oregon-postgres.render.com/grooveguru_dzvm?ssl=true"
     : process.env.POSTGRES_URL || "music_search";
 }
 

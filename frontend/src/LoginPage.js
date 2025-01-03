@@ -6,6 +6,7 @@ import { fab } from "@fortawesome/free-brands-svg-icons";
 import logo from "./images/logo.png";
 import Footer from "./Footer";
 import Modal from "./Modal";
+import ModalTwo from "./ModalTwo.js";
 
 library.add(fab);
 
@@ -22,6 +23,7 @@ const LoginPage = () => {
       <div className="h-screen w-screen bg-cover bg-top -z-10 bg-[url('./images/grooveGuruBackgroundImg2.jpg')]">
         <div className="absolute h-screen w-screen  bg-zinc-900/50  flex flex-col md:flex-row md:flex-wrap md:content-between md:justify-around">
           <Modal />
+          <ModalTwo />
           <div className="flex md:w-screen md:h-20 justify-between m-4 ">
             <button
               className="btn btn-ghost"
@@ -47,6 +49,8 @@ const LoginPage = () => {
           </div>
           <div className="my-auto mx-10 text-left text-2xl  md:m-0 md:pt-16 md:px-8 md:h-2/3">
             <h1 className="font-bold">GROOVEGURU</h1>
+            <h1 className="font-bold">Spotify has deprecated API end points </h1>
+            <h1 className="font-bold">that help this application run as of JAN 2nd, 2025</h1>
             <p>Ai enhanced playlist gererator</p>
           </div>
           <div className=" modal-box bg-black mb-auto mx-auto py-8 md:mx-0 md:px-8 md:w-1/3 lg:w-1/2 ">
@@ -63,7 +67,11 @@ const LoginPage = () => {
               />
               Continue with spotify
             </button>
-            <p className="pb-4">Learn more about GrooveGuru.</p>
+            <button
+              className="btn btn-ghost"
+              onClick={() => document.getElementById("my_modal_4").showModal()}
+            >Learn more about GrooveGuru.</button>
+            
           </div>
         </div>
       </div>

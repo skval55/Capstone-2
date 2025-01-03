@@ -47,6 +47,8 @@ class SpotifyApi {
    *
    */
   async getMusic(token, id) {
+
+    console.log('get music 1 ***********************')
     let trackLength = 50;
     let offset = 0;
     let tracks = [];
@@ -77,44 +79,41 @@ class SpotifyApi {
       if (ids.has(tracks[i].track.id)) {
         tracks.splice(i, 1);
         i--;
-      } else {
-        ids.add(tracks[i].track.id);
-      }
-    }
-    // console.log(ids.size);
-    // console.log("ids.size");
-    // console.log("tracks length");
-    // console.log(tracks.length);
-    const tracksId = [];
-    const arrOfArtistIds = [];
-    for (let i = 0; i < tracks.length; i++) {
-      tracksId[i] = tracks[i].track.id;
-      arrOfArtistIds[i] = tracks[i].track.artists[0].id;
-    }
-    for (let i = 0; i < tracks.length; i++) {
-      tracks[i] = {
-        id: tracks[i].track.id,
-        songName: tracks[i].track.name,
-        artist: tracks[i].track.artists[0].name,
-        album: tracks[i].track.album.name,
-        popularity: tracks[i].track.popularity,
-        mp3_url: tracks[i].track.preview_url,
-        image_urls: tracks[i].track.album.images,
-        url: tracks[i].track.album.external_urls.spotify,
-        playlist_id: id,
-      };
-    }
-
-    const genreObj = await this.getGenres([...new Set(arrOfArtistIds)], token);
-    // console.log("obj of artists", genreObj);
-    // console.log(tracks);
-    // console.log("merged arr", this.mergeGenreData(tracks, genreObj));
-    tracks = this.mergeGenreData(tracks, genreObj);
-    return [tracksId, tracks];
-  }
-  /**
-   * this function first calls the getMusic() which returns an arr of track id and an arr
-   * of tracks with other details(album, artist, popularity...)
+        } else {
+          ids.add(tracks[i].track.id);
+          }
+          }
+          // console.log(ids.size);
+          // console.log("ids.size");
+          // console.log("tracks length");
+          // console.log(tracks.length);
+          const tracksId = [];
+          const arrOfArtistIds = [];
+          for (let i = 0; i < tracks.length; i++) {
+            tracksId[i] = tracks[i].track.id;
+            arrOfArtistIds[i] = tracks[i].track.artists[0].id;
+            }
+            for (let i = 0; i < tracks.length; i++) {
+              tracks[i] = {
+                id: tracks[i].track.id,
+                songName: tracks[i].track.name,
+                artist: tracks[i].track.artists[0].name,
+                album: tracks[i].track.album.name,
+                popularity: tracks[i].track.popularity,
+                mp3_url: tracks[i].track.preview_url,
+                image_urls: tracks[i].track.album.images,
+                url: tracks[i].track.album.external_urls.spotify,
+                playlist_id: id,
+                };
+                }
+                
+                const genreObj = await this.getGenres([...new Set(arrOfArtistIds)], token);
+                tracks = this.mergeGenreData(tracks, genreObj);
+                return [tracksId, tracks];
+                }
+                /**
+                 * this function first calls the getMusic() which returns an arr of track id and an arr
+                 * of tracks with other details(album, artist, popularity...)
    *
    * this function will loop through the arr of trackid in groups of 100 to call the spotify api
    * and it will return more details on the tracks
@@ -125,16 +124,17 @@ class SpotifyApi {
     let newArr = [];
     for (let i = 0; i < tracksId.length; i + 100) {
       let tracksToCheck = tracksId.splice(i, i + 100);
+      console.log("********************************************************tracks")
       const res = await axios.get("https://api.spotify.com/v1/audio-features", {
         params: {
           ids: tracksToCheck.toString(),
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      newArr = [...newArr, ...res.data.audio_features];
-    }
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
+            },
+            });
+            newArr = [...newArr, ...res.data.audio_features];
+            }
     const [finalArr, promptArr] = this.mergeTrackInfo(newArr, tracks);
     console.log("final arr", finalArr);
     // console.log("prompt arr", promptArr);
